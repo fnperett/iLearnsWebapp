@@ -1,28 +1,30 @@
+<script src="scripts/global.js"></script>
+
 <html>
     <div class="page_body">
         <div>
-            <t style="font-size: 100px;">
+            <t style="font-size: 100px; font-family: cursive;">
                 iLearns
             </t>
         </div>
         <div class="buttons">
             <div>
-                <button class="element_info">
+                <button class="element_info" onclick="getPage('element_info')">
                     Element Info
                 </button>
             </div>
             <div>
-                <button class="compare">
+                <button class="compare" onclick="getPage('compare')">
                     Compare
                 </button>
             </div>
             <div>
-                <button class="bohr_models">
+                <button class="bohr_models" onclick="getPage('bohr_models')">
                     Bohr Models
                 </button>
             </div>
             <div>
-                <button class="ionic_compound">
+                <button class="ionic_compound" onclick="getPage('ionic_compound')">
                     Ionic Compund
                 </button>
             </div>
@@ -41,12 +43,12 @@
         align-content: center; 
         text-align: center;
     }
-    .page_body.buttons{
+    .page_body button{
         height: 10%;
         width: 50%;
         margin: 1%;
     }
-    .page_footer{
+    .page_footer button{
         height: 75px;
         width: 75px;
     }
