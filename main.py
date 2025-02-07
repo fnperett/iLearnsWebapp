@@ -12,6 +12,8 @@ class CustomHandler(http.server.SimpleHTTPRequestHandler):
             self.path = FILENAME
         elif self.path in ["/element_info", "/compare", "/bohr_models", "/ionic_compound"]:
             self.path = "pages"+self.path+".html"
+        elif self.path.startswith("/images") and self.path.endswith(".png"):
+            self.path = self.path #image paths should be correct with the GET path
         return super().do_GET()
 
 # Create an HTTP server
