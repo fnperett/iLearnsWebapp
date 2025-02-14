@@ -5,3 +5,4 @@ async function getRootPage(){
 async function getPage(page){
     window.location.replace(window.location.origin+'/'+page);
 }
+

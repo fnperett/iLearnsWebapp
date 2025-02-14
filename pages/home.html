@@ -1,0 +1,148 @@
+<script src="scripts/global.js"></script>
+
+<html class="full_page">
+    <canvas id="wave" style="position: absolute; z-index: -1;"></canvas>
+    <div class="page_body">
+        <div>
+            <t style="font-size: 12cqw; font-family: cursive;">
+                iLearns
+            </t>
+        </div>
+        <div class="buttons">
+            <div>
+                <button class="element_info" onclick="getPage('element_info')" style="background-color: 8185F0;">
+                    Element Info
+                </button>
+            </div>
+            <div>
+                <button class="compare" onclick="getPage('compare')" style="background-color: FFDD64;">
+                    Compare
+                </button>
+            </div>
+            <div>
+                <button class="bohr_models" onclick="getPage('bohr_models')" style="background-color: FF776D;">
+                    Bohr Models
+                </button>
+            </div>
+            <div>
+                <button class="ionic_compound" onclick="getPage('ionic_compound')" style="background-color: 81b684;">
+                    Ionic Compund
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="page_footer">
+        <button>
+            <img src="/images/gear.png" style="width: -webkit-fill-available;">
+        </button>
+    </div>
+</html>
+
+<style>
+    .full_page{
+        background-color: rgb(219, 219, 219);
+    }
+    .page_body{
+        height: 90%; 
+        align-content: center; 
+        text-align: center;
+    }
+    .page_body button{
+        height: 15%;
+        width: 50%;
+        margin: 1%;
+        border-radius: 1cqw;
+        font-size: 300%;
+        font-family: cursive;
+        color: black;
+        border-width: thick;
+    }
+    .page_footer button{
+        height: 75px;
+        width: 75px;
+    }
+
+    .wave{
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+    }
+
+    @keyframes wave-animation {
+            from { transform: translatex(-100%); }
+            to { transform: translatex(100%); }
+        }
+</style>
+
+<script>
+    const canvas = document.getElementById('wave');
+    const ctx = canvas.getContext('2d');
+
+    let width, height;
+    function resizeCanvas() {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    let time = 0;
+
+    function drawWave() {
+        ctx.clearRect(0, 0, width, height);
+
+        ctx.fillStyle = 'rgba(255,255,255,0.3)';
+        ctx.beginPath();
+
+        let amplitude = 100; // Wave height
+        let frequency = 0.005; // Wave frequency
+        let speed = 0.002; // Wave speed
+        let wavelength = 200; // Controls the width of one full wave cycle
+
+        for (let x = 0; x <= width + wavelength; x++) {
+            let y = amplitude * Math.sin((x * frequency) + time) + height * 0.5;
+            ctx.lineTo(x, y);
+        }
+
+        ctx.lineTo(width, height);
+        ctx.lineTo(0, height);
+        ctx.closePath();
+        ctx.fill();
+
+        time -= speed; // Move wave to the left over time
+
+        requestAnimationFrame(drawWave);
+    }
+
+    drawWave();
+
+    let inputSequence = ""; // Store key sequence
+        const maxLength = 32; // Maximum sequence length
+
+        document.addEventListener("keydown", function(event) {
+            console.log("Key Pressed:", event.key); // Debugging log
+
+            if (event.key === "Enter") {
+                console.log("Final Input Sequence:", inputSequence); // Debugging log
+
+                if (inputSequence === "6E006B3845") {
+                    console.log("Sequence recognized!");
+                    getPage("compare")
+                } else {
+                    console.log("Wrong sequence:", inputSequence);
+                }
+
+                inputSequence = ""; // Reset sequence after Enter
+            } else if (/^[a-zA-Z0-9]$/.test(event.key)) { 
+                // Append key only if it's alphanumeric & within limit
+                if (inputSequence.length < maxLength) {
+                    inputSequence += event.key;
+                } else {
+                    console.log("⚠️ Input limit reached (32 chars). Ignoring extra input.");
+                }
+            }
+        });
+
+</script>
