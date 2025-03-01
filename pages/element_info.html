@@ -19,6 +19,8 @@
             align-items: center;
             justify-content: center;
             font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px; 
         }
 
         .wave-container {
@@ -43,6 +45,35 @@
             animation: wave-animation 6s infinite linear reverse;
         }
 
+    
+        .label-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            position: absolute;
+            right: 50px;
+            top: 20px;
+        }
+        .label {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 500px;
+            margin-bottom: 10px;
+        }
+        .label-title {
+            font-weight: bold;
+            margin-right: 60px;
+            font-size: 20px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 200px; /* Adjust as needed */
+        }
+        .label-content {
+            font-size: 20px;
+        }
+
         @keyframes wave-animation {
             from { transform: translateX(0); }
             to { transform: translateX(-50%); }
@@ -50,11 +81,88 @@
     </style>
 </head>
 <body>
-
-    <div class="wave-container">
-        <div class="wave"></div>
-        <div class="wave"></div>
-    </div>
+    <div class = "label-container">
+        <div class="label">
+            <div class="label-title">Atomic Number:</div>
+            <div class="label-content">Number here</div>
+        </div>
+        <div class="label">
+            <div class="label-title">Oxidation State:</div>
+            <div class="label-content">State here</div>
+        </div>
+        <div class="label">
+            <div class="label-title">Electronegativity:</div>
+            <div class="label-content">Value here</div>
+        </div>
+        <div class="label">
+            <div class="label-title">Electron Configuration:</div>
+            <div class="label-content">Configuration here</div>
+        </div>
+        <div class="label">
+            <div class="label-title">Atomic Radius:</div>
+            <div class="label-content">Radius here</div>
+        </div>
+        <div class="label">
+            <div class="label-title">Ionization Energy:</div>
+            <div class="label-content">Energy here</div>
+        </div>
+        <div class="label">
+            <div class="label-title">Melting Point:</div>
+            <div class="label-content">Point here</div>
+        </div>
+        <div class="label">
+            <div class="label-title">Boiling Point:</div>
+            <div class="label-content">Point here</div>
+        </div>
+        <div class="label">
+            <div class="label-title">Year Discovered:</div>
+            <div class="label-content">Year here</div>
+        </div>
+        <div class="label">
+            <div class="label-title">Fun Fact:</div>
+            <div class="label-content">Fact here</div>
+        </div>
+    </div>    
 
 </body>
 </html>
+
+<script>
+    
+let inputSequence = ""; // Store key sequence
+const maxLength = 32; // Maximum sequence length
+
+document.addEventListener("keydown", function(event) {
+    console.log("Key Pressed:", event.key); // Debugging log
+
+    if (event.key === "Enter") {
+        console.log("Final Input Sequence:", inputSequence); // Debugging log
+        
+        if (inputSequence == "BACK"){
+            getPage("home")
+        }
+        else {
+            element=MockElementGetRequest(inputSequence) 
+            //Mock Get Request expecet to return dictionary of element or None if invalid
+            console.log(inputSequence)
+            if (element){
+                
+            }
+        }
+
+        inputSequence = ""; // Reset sequence after Enter
+    } else if (/^[a-zA-Z0-9]$/.test(event.key)) { 
+        // Append key only if it's alphanumeric & within limit
+        if (inputSequence.length < maxLength) {
+            inputSequence += event.key;
+        } else {
+            console.log("⚠️ Input limit reached (32 chars). Ignoring extra input.");
+        }
+    }
+});
+
+function MockGetRequest(element){
+    return
+}
+
+</script>
