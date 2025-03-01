@@ -16,17 +16,18 @@
             overflow: hidden;
             height: 100vh;
             display: flex;
-            align-items: center;
+            align-items: flex-start; /* Align items to the top */
             justify-content: center;
             font-family: Arial, sans-serif;
             margin: 0;
-            padding: 20px; 
+            padding: 20px;
         }
 
         .wave-container {
             position: absolute;
             width: 100%;
             bottom: 0;
+            z-index: 0; /* Ensure waves are behind text */
         }
 
         .wave {
@@ -38,6 +39,7 @@
             left: 0;
             border-radius: 50%;
             animation: wave-animation 5s infinite linear;
+            opacity: 75%;
         }
 
         .wave:nth-child(2) {
@@ -45,33 +47,56 @@
             animation: wave-animation 6s infinite linear reverse;
         }
 
-    
+        .title {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 8vh; /* Make the title bigger */
+            font-weight: bold;
+            color: white;
+        }
+
         .label-container {
             display: flex;
             flex-direction: column;
             align-items: flex-end;
             position: absolute;
-            right: 50px;
-            top: 20px;
+            right: 10px;
+            top: 100px; /* Add space from top */
+            bottom: 10px; /* Stretch container to the bottom */
+            width: 50vw; /* Adjust width to take up half of the viewport width */
+            max-height: calc(100vh - 90px); /* Ensure container doesn't overflow */
+            overflow-y: auto;
+            z-index: 1; /* Ensure labels are above the waves */
         }
         .label {
             display: flex;
             justify-content: space-between;
             width: 100%;
-            max-width: 500px;
-            margin-bottom: 10px;
+            margin-bottom: 30px; /* Adjusted space between rows */
         }
         .label-title {
             font-weight: bold;
-            margin-right: 60px;
-            font-size: 20px;
+            margin-right: 15px;
+            font-size: 4vh; /* Larger starting font size */
             white-space: nowrap;
-            overflow: hidden;
+            overflow: visible;
             text-overflow: ellipsis;
-            max-width: 200px; /* Adjust as needed */
+            max-width: 45%; /* Adjust max-width as needed */
         }
         .label-content {
-            font-size: 20px;
+            font-size: 4vh; /* Larger starting font size */
+            max-width: 45%; /* Adjust max-width as needed */
+        }
+
+        .element-name {
+            position: absolute;
+            top: 20%; /* Move down to 1/4 of the screen */
+            left: 40px; /* Move further to the left */
+            font-size: 7vh; /* Make the element name bigger */
+            font-weight: bolder;
+            color: white;
         }
 
         @keyframes wave-animation {
@@ -81,7 +106,13 @@
     </style>
 </head>
 <body>
-    <div class = "label-container">
+    <div class="wave-container">
+        <div class="wave"></div>
+        <div class="wave"></div>
+    </div>
+    <div class="title">Element Info</div> <!-- Add title -->
+    <div class="element-name">Element Name Here</div> <!-- Add element name -->
+    <div class="label-container">
         <div class="label">
             <div class="label-title">Atomic Number:</div>
             <div class="label-content">Number here</div>
@@ -122,13 +153,11 @@
             <div class="label-title">Fun Fact:</div>
             <div class="label-content">Fact here</div>
         </div>
-    </div>    
-
+    </div>
 </body>
 </html>
 
 <script>
-    
 let inputSequence = ""; // Store key sequence
 const maxLength = 32; // Maximum sequence length
 
@@ -142,11 +171,11 @@ document.addEventListener("keydown", function(event) {
             getPage("home")
         }
         else {
-            element=MockElementGetRequest(inputSequence) 
-            //Mock Get Request expecet to return dictionary of element or None if invalid
-            console.log(inputSequence)
+            element = MockElementGetRequest(inputSequence); 
+            //Mock Get Request expected to return dictionary of element or None if invalid
+            console.log(inputSequence);
             if (element){
-                
+                // Handle valid element
             }
         }
 
@@ -162,7 +191,6 @@ document.addEventListener("keydown", function(event) {
 });
 
 function MockGetRequest(element){
-    return
+    return;
 }
-
 </script>
