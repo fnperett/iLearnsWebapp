@@ -40,4 +40,7 @@ def csvToCollection(data, collection):
 #               collection - Name of table in MongoDB
 #Outputs:       returns document about the prompted element
 def getElementInfo(name, collection):
-    return collection.find_one({"Element Name":name})
+    retval=collection.find_one({"Atomic Number":name})
+    del retval['_id']
+    return retval
+    

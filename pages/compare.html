@@ -12,7 +12,7 @@
     }
 
     body {
-      background: #6dd5ed;
+      background: #e6ed6d;
       overflow: hidden;
       height: 100vh;
       font-family: Arial, sans-serif;
@@ -95,14 +95,13 @@
 
     <div class="comparison-wrapper">
       <!-- Left Image -->
-      <img id="left-image" src="https://via.placeholder.com/300?text=Element" alt="Element Image" class="element-image">
+      <img id="left-image" alt="Element Image" class="element-image">
 
       <!-- Table -->
       <div class="comparison-table">
         <!-- Left Element -->
         <div id="element-1" class="column">
           <div>Waiting...</div>
-          <div>-</div>
           <div>-</div>
           <div>-</div>
           <div>-</div>
@@ -121,8 +120,9 @@
           <div>Atomic Number</div>
           <div>Group</div>
           <div>Period</div>
-          <div>Caategory</div>
-          <div>Phase STP</div>
+          <div>Category</div>
+          <div>Phase at STP</div>
+          <div>Electronegativity</div>
           <div>Density</div>
           <div>Atomic Weight</div>
         </div>
@@ -139,14 +139,15 @@
           <div>-</div>
           <div>-</div>
           <div>-</div>
-          <div>-</div>
         </div>
       </div>
 
       <!-- Right Image -->
-      <img id="right-image" src="https://via.placeholder.com/300?text=Element" alt="Element Image" class="element-image">
+      <img id="right-image" alt="Element Image" class="element-image">
     </div>
   </div>
+
+  <script src="scripts/global.js"></script>
 
   <script>
     let inputSequence = "";
@@ -155,10 +156,9 @@
 
     document.addEventListener("keydown", function(event) {
       if (event.key === "Enter") {
-        const element = MockGetRequest(inputSequence.toLowerCase());
-        if (element) {
-          updateElements(element);
-        }
+        console.log(inputSequence)
+        const element = fetchData("compare-info/" + inputSequence.toLowerCase())
+        .then(element => updateElements(element))
         inputSequence = "";
       } else if (/^[a-zA-Z0-9]$/.test(event.key)) {
         if (inputSequence.length < maxLength) {
@@ -166,56 +166,6 @@
         }
       }
     });
-
-    function MockGetRequest(element) {
-      if (element === "h") {
-        return {
-          "Element Name": "Hydrogen",
-          number: "1",
-          oxidation: "+1",
-          electronegativity: "2.20",
-          configuration: "1s1",
-          radius: "53 pm",
-          ionization: "13.5984 eV",
-          melting: "-259.16 °C",
-          boiling: "-252.87 °C",
-          year: "1766",
-          image: "../images/hydrogen_form.jpg"
-        };
-      } else if (element === "o") {
-        return {
-          name: "Oxygen",
-          number: "8",
-          oxidation: "-2",
-          electronegativity: "3.40",
-          configuration: "1s2 2s2 2p4",
-          radius: "60 pm",
-          ionization: "13.6181 eV",
-          melting: "-218.79 °C",
-          boiling: "-182.96 °C",
-          year: "1774",
-          fact: "Vital for respiration.",
-          image: "../images/oxygen_form.jpg"
-        };
-      }
-      else if (element === "c") {
-        return {
-          name: "Carbon",
-          number: "6",
-          oxidation: "-4",
-          electronegativity: "3.40",
-          configuration: "1s2 2s2 2p4",
-          radius: "60 pm",
-          ionization: "13.6181 eV",
-          melting: "-218.79 °C",
-          boiling: "-182.96 °C",
-          year: "1774",
-          fact: "Vital for respiration.",
-          image: "../images/oxygen_form.jpg"
-        };
-      }
-      return null;
-    }
 
     function updateElements(newElement) {
       if (elementQueue.length < 2) {
@@ -233,22 +183,21 @@
     function setElementInfo(columnId, element, imageId) {
       const values = [
         element["Element Name"],
-        element.number,
-        element.oxidation,
-        element.electronegativity,
-        element.configuration,
-        element.radius,
-        element.ionization,
-        element.melting,
-        element.boiling,
-        element.year,
-        element.fact
+        element["Symbol"],
+        element["Atomic Number"],
+        element["Group"],
+        element["Period"],
+        element["Category"],
+        element["Phase at STP"],
+        element["Electronegativity "],
+        element["Density"]+ ' g/cm<sup>3</sup>',
+        element["Atomic Weight"]+ ' u',
       ];
       const column = document.getElementById(columnId).children;
       for (let i = 0; i < values.length; i++) {
-        column[i].innerText = values[i];
+        column[i].innerHTML = values[i];
       }
-      document.getElementById(imageId).src = element.image;
+      document.getElementById(imageId).src = element["image"];
     }
   </script>
 
