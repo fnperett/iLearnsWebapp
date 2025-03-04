@@ -16,15 +16,18 @@
             overflow: hidden;
             height: 100vh;
             display: flex;
-            align-items: center;
+            align-items: flex-start; /* Align items to the top */
             justify-content: center;
             font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
         }
 
         .wave-container {
             position: absolute;
             width: 100%;
             bottom: 0;
+            z-index: 0; /* Ensure waves are behind text */
         }
 
         .wave {
@@ -36,11 +39,84 @@
             left: 0;
             border-radius: 50%;
             animation: wave-animation 5s infinite linear;
+            opacity: 75%;
         }
 
         .wave:nth-child(2) {
             background: rgba(255, 255, 255, 0.3);
             animation: wave-animation 6s infinite linear reverse;
+        }
+
+        .title {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 8vh; /* Make the title bigger */
+            font-weight: bold;
+            color: white;
+        }
+
+        .element-name {
+            position: absolute;
+            top: 25%; /* Move down to 1/4 of the screen */
+            left: 40px; /* Move further to the left */
+            font-size: 7vh; /* Make the element name bigger */
+            font-weight: bolder;
+            color: white;
+        }
+
+        .image-container {
+            display: flex;
+            justify-content: space-between;
+            position: absolute;
+            top: 35%; /* Adjust as needed */
+            left: 10px;
+            width: 45vw; /* Adjust width to take up half of the viewport width */
+            height: 30vh;
+            z-index: 1;
+        }
+        .image {
+            width: 48%; /* Adjust width to fit two images side by side */
+            height: auto;
+            visibility: hidden; /* Hide images for now */
+            background-color: #ffffff; /* Placeholder background color */
+            border: 2px solid #ccc; /* Placeholder border */
+            border-radius: 10px; /* Optional: add border radius */
+            overflow: hidden; /* Hide any overflow */
+        }
+
+        .label-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            position: absolute;
+            right: 10px;
+            top: 100px; /* Add space from top */
+            bottom: 10px; /* Stretch container to the bottom */
+            width: 50vw; /* Adjust width to take up half of the viewport width */
+            max-height: calc(100vh - 90px); /* Ensure container doesn't overflow */
+            overflow-y: auto;
+            z-index: 1; /* Ensure labels are above the waves */
+        }
+        .label {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-bottom: 30px; /* Adjusted space between rows */
+        }
+        .label-title {
+            font-weight: bold;
+            margin-right: 10px;
+            font-size: 4vh; /* Larger starting font size */
+            white-space: nowrap;
+            overflow: visible;
+            text-overflow: ellipsis;
+            max-width: 45%; /* Adjust max-width as needed */
+        }
+        .label-content {
+            font-size: 4vh; /* Larger starting font size */
+            max-width: 45%; /* Adjust max-width as needed */
         }
 
         @keyframes wave-animation {
@@ -50,11 +126,153 @@
     </style>
 </head>
 <body>
-
     <div class="wave-container">
         <div class="wave"></div>
         <div class="wave"></div>
     </div>
-
+    <div class="title">Element Info</div> <!-- Add title -->
+    <div class="element-name" id="element-name">Element Name Here</div> <!-- Add element name -->
+    <div class="image-container">
+        <img class="image" id="image1"  alt="Image 1" >
+        <img class="image" id="image2" alt="Image 2">
+    </div>
+    <div class="label-container">
+        <div class="label">
+            <div class="label-title">Atomic Number:</div>
+            <div class="label-content" id="atomic-number">Number here</div>
+        </div>
+        <div class="label">
+            <div class="label-title">Oxidation State:</div>
+            <div class="label-content" id="oxidation-state">State here</div>
+        </div>
+        <div class="label">
+            <div class="label-title">Electronegativity:</div>
+            <div class="label-content" id="electronegativity">Value here</div>
+        </div>
+        <div class="label">
+            <div class="label-title">Electron Configuration:</div>
+            <div class="label-content" id="electron-configuration">Configuration here</div>
+        </div>
+        <div class="label">
+            <div class="label-title">Atomic Radius:</div>
+            <div class="label-content" id="atomic-radius">Radius here</div>
+        </div>
+        <div class="label">
+            <div class="label-title">Ionization Energy:</div>
+            <div class="label-content" id="ionization-energy">Energy here</div>
+        </div>
+        <div class="label">
+            <div class="label-title">Melting Point:</div>
+            <div class="label-content" id="melting-point">Point here</div>
+        </div>
+        <div class="label">
+            <div class="label-title">Boiling Point:</div>
+            <div class="label-content" id="boiling-point">Point here</div>
+        </div>
+        <div class="label">
+            <div class="label-title">Year Discovered:</div>
+            <div class="label-content" id="year-discovered">Year here</div>
+        </div>
+        <div class="label">
+            <div class="label-title">Fun Fact:</div>
+            <div class="label-content" id="fun-fact">Fact here</div>
+        </div>
+    </div>
 </body>
 </html>
+
+<script src="scripts/global.js"></script>
+<script>
+let inputSequence = ""; // Store key sequence
+const maxLength = 32; // Maximum sequence length
+
+document.addEventListener("keydown", function(event) {
+    console.log("Key Pressed:", event.key); // Debugging log
+
+    if (event.key === "Enter") {
+        console.log("Final Input Sequence:", inputSequence); // Debugging log
+        
+        if (inputSequence == "back"){
+            getPage("home")
+        }
+        else {
+            //Mock Get Request expected to return dictionary of element or None if invalid
+            element = MockGetRequest(inputSequence); 
+            console.log(inputSequence);
+            if (element){
+                // Handle valid element
+                setElementInfo(element)
+            }
+        }
+        inputSequence = ""
+
+        inputSequence = ""; // Reset sequence after Enter
+    } else if (/^[a-zA-Z0-9]$/.test(event.key)) { 
+        // Append key only if it's alphanumeric & within limit
+        if (inputSequence.length < maxLength) {
+            inputSequence += event.key;
+        } else {
+            console.log("⚠️ Input limit reached (32 chars). Ignoring extra input.");
+        }
+    }
+});
+
+function MockGetRequest(element){
+    if (element == "h"){
+        dict = {
+        "Element Name":"Hydrogen",
+        "Atomic Number": "1",
+        "Oxidation State":"+1",
+        "Electronegativity":"2.20",
+        "Electron Configuration":"1",
+        "Atomic Radius":"32",
+        "Ionization Energy":"1312",
+        "Melting Point":"14",
+        "Boiling Point":"20",
+        "Year Discovered":"1671", 
+        "Fun Fact":"",
+        "form_image":"../images/hydrogen_form.jpg",
+        "usage_image":"../images/hydrogen_usage.png"
+        } 
+    } else if (element == "o"){
+        dict = {
+        "Element Name":"Oxygen",
+        "Atomic Number": "8",
+        "Oxidation State":"-2",
+        "Electronegativity":"3.40",
+        "Electron Configuration":"2-6",
+        "Atomic Radius":"64",
+        "Ionization Energy":"1314",
+        "Melting Point":"53",
+        "Boiling Point":"90",
+        "Year Discovered":"1604, 1771", 
+        "Fun Fact":"",
+        "form_image":"../images/oxygen_form.jpg",
+        "usage_image":"../images/oxygen_usage.jpg"
+        } 
+    }
+    return dict;
+}
+
+function setElementInfo(element_dict){
+    document.getElementById("element-name").innerHTML = element_dict["Element Name"]
+
+    document.getElementById("atomic-number").innerHTML = element_dict["Atomic Number"]
+    document.getElementById("oxidation-state").innerHTML = element_dict["Oxidation State"]
+    document.getElementById("electronegativity").innerHTML = element_dict["Electronegativity"]
+    document.getElementById("electron-configuration").innerHTML = element_dict["Electron Configuration"]
+    document.getElementById("atomic-radius").innerHTML = element_dict["Atomic Radius"]
+    document.getElementById("ionization-energy").innerHTML = element_dict["Ionization Energy"]
+    document.getElementById("melting-point").innerHTML = element_dict["Melting Point"]
+    document.getElementById("boiling-point").innerHTML = element_dict["Boiling Point"]
+    document.getElementById("year-discovered").innerHTML = element_dict["Year Discovered"]
+    document.getElementById("fun-fact").innerHTML = element_dict["Fun Fact"]
+
+    document.getElementById("image1").src = element_dict["form_image"]
+    document.getElementById("image1").style.visibility = "visible"
+
+    document.getElementById("image2").src = element_dict["usage_image"]
+    document.getElementById("image2").style.visibility = "visible"
+
+}
+</script>
