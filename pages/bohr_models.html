@@ -18,6 +18,32 @@
             </button>
         </div>
     </div>
+    
+    <body>
+    <div class="container" id="ring"></div>
+    <script>
+        function placeElectrons(numElectrons) {
+            const container = document.getElementById('ring');
+            const radius = container.offsetWidth / 2;
+            const centerX = radius;
+            const centerY = radius;
+            const angleStep = 2 * Math.PI / numElectrons;
+            
+            for (let i = 0; i < numElectrons; i++) {
+                const angle = i * angleStep;
+                const x = centerX + radius * Math.cos(angle) - 10; // Subtract 10 to center the circles
+                const y = centerY + radius * Math.sin(angle) - 10;
+                const electron = document.createElement('div');
+                electron.className = 'electron';
+                electron.style.left = `${x}px`;
+                electron.style.top = `${y}px`;
+                container.appendChild(electron);
+            }
+        }
+        
+        placeElectrons(12); // Change the number to the desired number of electrons
+    </script>
+    </body>
     <div class="page_footer">
         <button onclick="getRootPage();">
             <img src="/images/back.png" style="width: -webkit-fill-available;">
@@ -49,5 +75,20 @@
     .page_footer button{
         height: 75px;
         width: 75px;
+    }
+
+    .container {
+        position: relative;
+        width: 300px;
+        height: 300px;
+        border-radius: 50%;
+        border: 1px solid #000;
+}
+    .electron {
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        background-color: red;
+        border-radius: 50%;
     }
 </style>
