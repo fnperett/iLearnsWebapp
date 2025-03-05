@@ -10,7 +10,6 @@
             height: 10%;
             display: flex;
             align-items: center;
-            left: 0;
             justify-content: flex-start; /* Move header all the way to the left */
         }
         .title {
@@ -33,11 +32,14 @@
         }
         .container {
             position: relative;
-            width: 300px;
-            height: 300px;
-            border-radius: 50%;
-            border: 1px solid #000;
+            width: 600px; /* Increased the container size */
+            height: 600px; /* Increased the container size */
             top: 20px; /* Adjust this value to lower the ring container */
+        }
+        .ring {
+            position: absolute;
+            border: 1px solid black;
+            border-radius: 50%;
         }
         .electron {
             position: absolute;
@@ -93,26 +95,44 @@
         </button>
     </div>
     <script>
-        function placeElectrons(numElectrons) {
+        function placeElectrons(rings) {
             const container = document.getElementById('ring');
-            const radius = container.offsetWidth / 2;
-            const centerX = radius;
-            const centerY = radius;
-            const angleStep = 2 * Math.PI / numElectrons;
+            const radiusIncrement = container.offsetWidth / (1.5 * rings.length + 1); // Increased the radius increment
+            const centerX = container.offsetWidth / 2;
+            const centerY = container.offsetHeight / 2;
             
-            for (let i = 0; i < numElectrons; i++) {
-                const angle = i * angleStep;
-                const x = centerX + radius * Math.cos(angle) - 10; // Subtract 10 to center the circles
-                const y = centerY + radius * Math.sin(angle) - 10;
-                const electron = document.createElement('div');
-                electron.className = 'electron';
-                electron.style.left = `${x}px`;
-                electron.style.top = `${y}px`;
-                container.appendChild(electron);
-            }
+            rings.forEach((numElectrons, index) => {
+                const radius = radiusIncrement * (index + 1);
+
+                // Create ring element
+                const ring = document.createElement('div');
+                ring.className = 'ring';
+                ring.style.width = `${2 * radius}px`;
+                ring.style.height = `${2 * radius}px`;
+                ring.style.left = `${centerX - radius}px`;
+                ring.style.top = `${centerY - radius}px`;
+                container.appendChild(ring);
+                
+                const angleStep = 2 * Math.PI / numElectrons;
+                
+                for (let i = 0; i < numElectrons; i++) {
+                    const angle = i * angleStep;
+                    const x = centerX + radius * Math.cos(angle) - 10; // Subtract 10 to center the circles
+                    const y = centerY + radius * Math.sin(angle) - 10;
+                    const electron = document.createElement('div');
+                    electron.className = 'electron';
+                    electron.style.left = `${x}px`;
+                    electron.style.top = `${y}px`;
+                    container.appendChild(electron);
+                }
+            });
         }
-        
-        placeElectrons(12); // Change the number to the desired number of electrons
+
+        function parseConfiguration(configString) {
+            return configString.split('-').map(Number);
+        }
+        let config = "2-5-6-7"
+        placeElectrons(parseConfiguration(config)); // Example: 4 rings with 2, 8, 18, and 32 electrons each
     </script>
 </body>
 </html>
