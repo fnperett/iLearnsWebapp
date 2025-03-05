@@ -197,15 +197,9 @@ document.addEventListener("keydown", function(event) {
         }
         else {
             //Mock Get Request expected to return dictionary of element or None if invalid
-            element = MockGetRequest(inputSequence); 
-            console.log(inputSequence);
-            if (element){
-                // Handle valid element
-                setElementInfo(element)
-            }
+        const element = fetchData("element-info/" + inputSequence.toLowerCase())
+        .then(element => setElementInfo(element))
         }
-        inputSequence = ""
-
         inputSequence = ""; // Reset sequence after Enter
     } else if (/^[a-zA-Z0-9]$/.test(event.key)) { 
         // Append key only if it's alphanumeric & within limit
@@ -217,54 +211,17 @@ document.addEventListener("keydown", function(event) {
     }
 });
 
-function MockGetRequest(element){
-    if (element == "h"){
-        dict = {
-        "Element Name":"Hydrogen",
-        "Atomic Number": "1",
-        "Oxidation State":"+1",
-        "Electronegativity":"2.20",
-        "Electron Configuration":"1",
-        "Atomic Radius":"32",
-        "Ionization Energy":"1312",
-        "Melting Point":"14",
-        "Boiling Point":"20",
-        "Year Discovered":"1671", 
-        "Fun Fact":"",
-        "form_image":"../images/hydrogen_form.jpg",
-        "usage_image":"../images/hydrogen_usage.png"
-        } 
-    } else if (element == "o"){
-        dict = {
-        "Element Name":"Oxygen",
-        "Atomic Number": "8",
-        "Oxidation State":"-2",
-        "Electronegativity":"3.40",
-        "Electron Configuration":"2-6",
-        "Atomic Radius":"64",
-        "Ionization Energy":"1314",
-        "Melting Point":"53",
-        "Boiling Point":"90",
-        "Year Discovered":"1604, 1771", 
-        "Fun Fact":"",
-        "form_image":"../images/oxygen_form.jpg",
-        "usage_image":"../images/oxygen_usage.jpg"
-        } 
-    }
-    return dict;
-}
-
 function setElementInfo(element_dict){
     document.getElementById("element-name").innerHTML = element_dict["Element Name"]
 
     document.getElementById("atomic-number").innerHTML = element_dict["Atomic Number"]
     document.getElementById("oxidation-state").innerHTML = element_dict["Oxidation State"]
-    document.getElementById("electronegativity").innerHTML = element_dict["Electronegativity"]
+    document.getElementById("electronegativity").innerHTML = element_dict["Electronegativity "]
     document.getElementById("electron-configuration").innerHTML = element_dict["Electron Configuration"]
-    document.getElementById("atomic-radius").innerHTML = element_dict["Atomic Radius"]
-    document.getElementById("ionization-energy").innerHTML = element_dict["Ionization Energy"]
-    document.getElementById("melting-point").innerHTML = element_dict["Melting Point"]
-    document.getElementById("boiling-point").innerHTML = element_dict["Boiling Point"]
+    document.getElementById("atomic-radius").innerHTML = element_dict["Atomic Radius"] + ' pm'
+    document.getElementById("ionization-energy").innerHTML = element_dict["Ionization Energy"] + ' kJ/mol'
+    document.getElementById("melting-point").innerHTML = element_dict["Melting Point"] + ' K'
+    document.getElementById("boiling-point").innerHTML = element_dict["Boiling Point"] + ' K'
     document.getElementById("year-discovered").innerHTML = element_dict["Year Discovered"]
     document.getElementById("fun-fact").innerHTML = element_dict["Fun Fact"]
 
