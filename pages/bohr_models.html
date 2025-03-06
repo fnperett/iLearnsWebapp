@@ -296,6 +296,8 @@
             const totalElectrons = configList.reduce((total, num) => total + num, 0);
             document.getElementById('electrons').textContent = totalElectrons;
 
+            document.getElementById('outer-electrons').textContent = currentConfig.split('-').pop();
+
         }
         
         function updateSelection() {
@@ -354,7 +356,7 @@
             currentConfig = element["Electron Configuration"];
             document.getElementById('current-config').textContent = currentConfig;
             updateConfig();
-            document.getElementById('outer-electrons').textContent = currentConfig.split('-').pop();
+        
             document.getElementById('proton-count').innerHTML = element["Atomic Number"];
             document.getElementById('neutron-count').innerHTML = element["Atomic Number"];
             document.getElementById('neutrons').textContent = element["Atomic Number"];
