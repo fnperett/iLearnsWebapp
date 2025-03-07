@@ -32,7 +32,7 @@
         </div>
     </div>
     <div class="page_footer">
-        <button>
+        <button onclick="getPage('settings')">
             <img src="/images/gear.png" style="width: -webkit-fill-available;">
         </button>
     </div>
@@ -127,7 +127,7 @@
             if (event.key === "Enter") {
                 console.log("Final Input Sequence:", inputSequence); // Debugging log
 
-                if (inputSequence === "6E006B3845") {
+                if (inputSequence === "7200774E84") {
                     console.log("Sequence recognized!");
                     getPage("compare")
                 } else {
