@@ -118,6 +118,16 @@
             font-size: 4vh; /* Larger starting font size */
             max-width: 45%; /* Adjust max-width as needed */
         }
+        .page_footer {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            padding: 10px;
+        }
+        #back-button{
+            width: 100px;
+            height: 100px;
+        }
 
         @keyframes wave-animation {
             from { transform: translateX(0); }
@@ -177,6 +187,11 @@
             <div class="label-title">Fun Fact:</div>
             <div class="label-content" id="fun-fact">Fact here</div>
         </div>
+    </div>
+    <div class="page_footer">
+        <button id="back-button" onclick="getRootPage();">
+            <img src="/images/back.png" style="width: -webkit-fill-available;">
+        </button>
     </div>
 </body>
 </html>

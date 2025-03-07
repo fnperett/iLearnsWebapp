@@ -86,6 +86,17 @@
     .middle-column div {
       font-weight: 700;
     }
+    .page_footer {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      padding: 10px;
+      z-index: 1;
+    }
+    #back-button{
+      width: 100px;
+      height: 100px;
+    }
   </style>
 </head>
 <body>
@@ -145,6 +156,12 @@
       <!-- Right Image -->
       <img id="right-image" alt="Element Image" class="element-image">
     </div>
+  </div>
+  
+  <div class="page_footer">
+    <button id="back-button" onclick="getRootPage();">
+        <img src="/images/back.png" style="width: -webkit-fill-available;">
+    </button>
   </div>
 
   <script src="scripts/global.js"></script>
