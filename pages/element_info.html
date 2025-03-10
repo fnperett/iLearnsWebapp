@@ -79,7 +79,6 @@
         .image {
             width: 48%; /* Adjust width to fit two images side by side */
             height: auto;
-            visibility: hidden; /* Hide images for now */
             background-color: #ffffff; /* Placeholder background color */
             border: 2px solid #ccc; /* Placeholder border */
             border-radius: 10px; /* Optional: add border radius */
@@ -240,12 +239,13 @@ function setElementInfo(element_dict){
     document.getElementById("year-discovered").innerHTML = element_dict["Year Discovered"]
     document.getElementById("fun-fact").innerHTML = element_dict["Fun Fact"]
 
-    /*
-    document.getElementById("image1").src = element_dict["form_image"]
+    
+    document.getElementById("image1").src = "/images_form/"+element_dict["Element Name"].toLowerCase()+"-form.jpg"
+    console.log(document.getElementById("image1").src)
     document.getElementById("image1").style.visibility = "visible"
 
-    document.getElementById("image2").src = element_dict["usage_image"]
+    document.getElementById("image2").src = "/images_usage/"+element_dict["Element Name"].toLowerCase()+"-usage.jpg"
     document.getElementById("image2").style.visibility = "visible"
-    */
+    
 }
 </script>
