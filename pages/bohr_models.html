@@ -34,7 +34,7 @@
             width: 30%;
             padding: 20px;
             text-align: left;
-            font-size: 24px; /* Increased font size */
+            font-size: 30px; /* Increased font size */
             font-family: Arial, sans-serif;
             position: absolute;
             left: 0;
@@ -109,7 +109,7 @@
         }
         .options_section {
             width: 30%;
-            padding: 20px;
+            padding: 10px;
             text-align: left;
             font-size: 24px;
             font-family: Arial, sans-serif;
@@ -126,6 +126,11 @@
             display: flex;
             flex-direction: row;
             gap: 20px;
+        }
+
+        #element-name {
+            font-size: 50px;
+            font-weight: bold;
         }
 
         #left-arrow, #right-arrow {
@@ -154,7 +159,7 @@
         <div class="info_section">
             <p><strong>Element Name:</strong> <span id="element-name"></span></p>
             <p><strong>Outer Electrons:</strong> <span id="outer-electrons"></span></p>
-            <p><strong>Current Oxidation:</strong> <span id="current-oxidation"></span></p>
+            <p><strong>Current Charge:</strong> <span id="current-charge"></span></p>
             <p><strong>Current Atomic Weight:</strong> <span id="atomic-weight"></span></p>
             <p><strong>Current Configuration:</strong> <span id="current-config"></span></p> <!-- New line for configuration -->
         </div>
@@ -174,7 +179,7 @@
     </div>
     <div class="page_footer">
         <button onclick="getRootPage();">
-            <img src="/images/back.png" style="width: -webkit-fill-available;">
+            <img src="/images_usage/back.png" style="width: -webkit-fill-available;">
         </button>
     </div>
     <div class="control_buttons">
@@ -251,6 +256,15 @@
                 // Calculate the total number of electrons and update the text
                 const totalElectrons = configList.reduce((total, num) => total + num, 0);
                 document.getElementById('electrons').textContent = totalElectrons;
+                if (document.getElementById('proton-count').textContent != 0){
+                    let protons = parseInt(document.getElementById('proton-count').textContent);
+                    let charge = protons - totalElectrons;
+                    if (charge <= 0) {
+                        document.getElementById('current-charge').textContent = charge
+                    } else {
+                        document.getElementById('current-charge').textContent = "+" + charge
+                    }
+                }
             } else if (selectedIndex === 1) { // Only modify neutrons if neutrons are selected
                 const neutronsElement = document.getElementById('neutrons');
                 let neutrons = parseInt(neutronsElement.textContent);
@@ -305,8 +319,10 @@
                 const textElement = document.getElementById(`${option}-text`);
                 if (index === selectedIndex) {
                     textElement.innerHTML = `<strong>${textElement.innerHTML}</strong>`; // Wrap the content in bold tags
+                    textElement.style['font-size']= "35px"; // Increase the font size
                 } else {
                     textElement.innerHTML = textElement.innerHTML.replace(/<\/?strong>/g, ''); // Remove bold tags
+                    textElement.style['font-size']= "20px"; // Reset the font size
                 }
             });
         }
@@ -315,7 +331,6 @@
         let currentConfig = ""; // Starting configuration with 3 rings
         let selectedIndex = 0; // 0 for electrons, 1 for neutrons
         const options = ['electrons', 'neutrons'];
-
 
         document.getElementById('increment').addEventListener('click', () => updateConfig('increment'));
         document.getElementById('decrement').addEventListener('click', () => updateConfig('decrement'));
@@ -355,11 +370,11 @@
             document.getElementById('element-name').textContent = element["Element Name"];
             currentConfig = element["Electron Configuration"];
             document.getElementById('current-config').textContent = currentConfig;
-            updateConfig();
-        
             document.getElementById('proton-count').innerHTML = element["Atomic Number"];
             document.getElementById('neutron-count').innerHTML = element["Atomic Number"];
             document.getElementById('neutrons').textContent = element["Atomic Number"];
+            updateConfig();
+        
 
             const protons = parseInt(document.getElementById('proton-count').textContent);
             const neutrons = parseInt(document.getElementById('neutrons').textContent);
