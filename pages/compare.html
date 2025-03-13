@@ -55,6 +55,7 @@
       border-radius: 20px;
       background-color: rgba(255, 255, 255, 0.8);
       padding: 15px;
+      visibility: hidden;
     }
 
     .comparison-table {
@@ -215,6 +216,7 @@
         column[i].innerHTML = values[i];
       }
       document.getElementById(imageId).src = "/images_config/"+element["Element Name"].toLowerCase()+"-electron-configuration.jpg";
+      document.getElementById(imageId).style.visibility = "visible";
     }
   </script>
 

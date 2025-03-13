@@ -59,12 +59,20 @@
 
         .element-name {
             position: absolute;
-            top: 25%; /* Move down to 1/4 of the screen */
-            left: 40px; /* Move further to the left */
-            font-size: 7vh; /* Make the element name bigger */
+            top: 20%; /* Move down to 1/4 of the screen */
+            left: 12.5%; /* Move further to the left */
+            font-size: 9vh; /* Make the element name bigger */
             font-weight: bolder;
             color: white;
-        }
+            visibility: hidden; /* Hide element name by default */
+            color: white; /* Text color */
+            text-shadow: 
+                -1px -1px 0 #000,  
+                1px -1px 0 #000,
+                -1px  1px 0 #000,
+                1px  1px 0 #000; /* Border color */
+        }           
+        
 
         .image-container {
             display: flex;
@@ -83,6 +91,7 @@
             border: 2px solid #ccc; /* Placeholder border */
             border-radius: 10px; /* Optional: add border radius */
             overflow: hidden; /* Hide any overflow */
+            visibility: hidden; /* Hide images by default */
         }
 
         .label-container {
@@ -90,8 +99,8 @@
             flex-direction: column;
             align-items: flex-end;
             position: absolute;
-            right: 10px;
-            top: 100px; /* Add space from top */
+            right: 75px;
+            top: 150px;
             bottom: 10px; /* Stretch container to the bottom */
             width: 50vw; /* Adjust width to take up half of the viewport width */
             max-height: calc(100vh - 90px); /* Ensure container doesn't overflow */
@@ -187,7 +196,7 @@
             <div class="label-content" id="year-discovered">Year here</div>
         </div>
         <div class="label">
-            <div class="label-title">Fun Fact:</div>
+            <div class="label-title"><br>Fun Fact:</div>
             <div class="label-content" id="fun-fact">Fact here</div>
         </div>
     </div>
@@ -231,6 +240,7 @@ document.addEventListener("keydown", function(event) {
 
 function setElementInfo(element_dict){
     document.getElementById("element-name").innerHTML = element_dict["Element Name"]
+    document.getElementById("element-name").style.visibility = "visible"
 
     document.getElementById("atomic-number").innerHTML = element_dict["Atomic Number"]
     document.getElementById("oxidation-state").innerHTML = element_dict["Oxidation State"]
