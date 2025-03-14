@@ -4,8 +4,14 @@
     <canvas id="wave" style="position: absolute; z-index: -1;"></canvas>
     <div class="page_body">
         <div>
-            <t style="font-size: 12cqw; font-family: cursive;">
-                iLearns
+            <t class="title">
+                <span style="color: red;">i</span>
+                <span style="color: orange;">L</span>
+                <span style="color: yellow;">e</span>
+                <span style="color: rgb(72, 255, 72);">a</span>
+                <span style="color: rgb(0, 229, 255);">r</span>
+                <span style="color: blue;">n</span>
+                <span style="color: purple;">s</span>
             </t>
         </div>
         <div class="buttons">
@@ -67,6 +73,17 @@
         width: 100%;
         height: 100%;
         overflow: hidden;
+    }
+    .title{
+        font-size: 12cqw;
+        font-family: cursive;
+        letter-spacing: -30px;
+        word-spacing: 0;
+        text-shadow: 
+            -1.5px -1.5px 0 #000,  
+            1.5px -1.5px 0 #000,
+            -1.5px  1.5px 0 #000,
+            1.5px  1.5px 0 #000; /* Border color */
     }
 
     @keyframes wave-animation {

@@ -67,10 +67,10 @@
             visibility: hidden; /* Hide element name by default */
             color: white; /* Text color */
             text-shadow: 
-                -1px -1px 0 #000,  
-                1px -1px 0 #000,
-                -1px  1px 0 #000,
-                1px  1px 0 #000; /* Border color */
+                -2px -2px 0 #000,  
+                2px -2px 0 #000,
+                -2px  2px 0 #000,
+                2px  2px 0 #000; /* Border color */
         }           
         
 
@@ -132,6 +132,26 @@
             bottom: 0;
             padding: 10px;
         }
+        .page_headder {
+            position:relative;
+            height: 10%;
+            top: 1%;
+            left: 1%; 
+            width: 100%;
+            font-size: 24px;
+            font-family: cursive;
+            letter-spacing: -20px;
+            word-spacing: 0;
+            text-shadow: 
+                -1px -1px 0 #000,  
+                1px -1px 0 #000,
+                -1px  1px 0 #000,
+                1px  1px 0 #000; /* Border color */
+        }
+        .page_headder span {
+            display: inline;
+            letter-spacing: 0; /* Ensures no additional spacing */
+        }
         #back-button{
             width: 100px;
             height: 100px;
@@ -148,6 +168,17 @@
     </style>
 </head>
 <body>
+    <div class="page_headder">
+        <h1 class="multicolor-word">
+            <span style="color: red;">i</span>
+            <span style="color: orange;">L</span>
+            <span style="color: yellow;">e</span>
+            <span style="color: rgb(72, 255, 72);">a</span>
+            <span style="color: rgb(0, 229, 255);">r</span>
+            <span style="color: blue;">n</span>
+            <span style="color: purple;">s</span>
+        </h1>
+    </div>
     <div class="wave-container">
         <div class="wave"></div>
         <div class="wave"></div>
