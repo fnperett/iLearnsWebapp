@@ -143,13 +143,24 @@
 
             if (event.key === "Enter") {
                 console.log("Final Input Sequence:", inputSequence); // Debugging log
-
-                if (inputSequence === "6E006B3845") {
-                    console.log("Sequence recognized!");
-                    getPage("compare")
-                } else {
-                    console.log("Wrong sequence:", inputSequence);
-                }
+                fetchData("tag-info/" + inputSequence.toLowerCase())
+                .then(tag => {
+                    if (tag["Tag Name"]) {
+                        if (tag["Tag Name"] === "element_info") {
+                            getPage('element_info');
+                        } else if (tag["Tag Name"] === "compare") {
+                            getPage('compare');
+                        } else if (tag["Tag Name"] === "bohr_models") {
+                            getPage('bohr_models');
+                        } else if (tag["Tag Name"] === "ionic_compound") {
+                            getPage('ionic_compound');
+                        }
+                    }
+                    inputSequence = "";
+                })
+                .catch(error => {
+                    console.error("Error fetching data:", error);
+                });
 
                 inputSequence = ""; // Reset sequence after Enter
             } else if (/^[a-zA-Z0-9]$/.test(event.key)) { 

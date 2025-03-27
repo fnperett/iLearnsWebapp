@@ -1,3 +1,5 @@
+let posterid = "Poster1";
+
 async function getRootPage(){
   window.location.replace(window.location.origin);
 }

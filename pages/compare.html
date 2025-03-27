@@ -189,9 +189,31 @@
     document.addEventListener("keydown", function(event) {
       if (event.key === "Enter") {
         console.log(inputSequence)
-        const element = fetchData("compare-info/" + inputSequence.toLowerCase())
-        .then(element => updateElements(element))
+        const element = fetchData("tag-info/" + inputSequence.toLowerCase())
+        .then(tag => {
+        if (tag["Tag Name"]) {
+          if (tag["Tag Name"] === "element_info") {
+              getPage('element_info');
+          } else if (tag["Tag Name"] === "compare") {
+              getPage('compare');
+          } else if (tag["Tag Name"] === "bohr_models") {
+              getPage('bohr_models');
+          } else if (tag["Tag Name"] === "ionic_compound") {
+              getPage('ionic_compound');
+          } else if (tag["Tag Name"] === "home" || tag["Tag Name"] === "back"){ 
+              getPage('');
+          }
+        }
+        else if (tag["Element Name"]){
+            updateElements(tag)
+        }
+        else{
+            console.log("Invalid Input")
+        }
         inputSequence = "";
+        })
+    
+    inputSequence = ""; // Reset sequence after Enter
       } else if (/^[a-zA-Z0-9]$/.test(event.key)) {
         if (inputSequence.length < maxLength) {
           inputSequence += event.key;

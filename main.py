@@ -37,12 +37,27 @@ class CustomHandler(http.server.SimpleHTTPRequestHandler):
             # Convert the dictionary to a JSON string and write it as the response
             self.wfile.write(json.dumps(response).encode("utf-8"))
             return
+        
+        elif self.path.startswith("/tag-info"):
+            info = self.path[len("/tag-info/"):]
+            response = mongo.getTagInfo(info, mongo.tags)
+            if response["Element"] == "yes":
+                element = response["Tag Name"].capitalize()
+                response = mongo.getElementInfo(element, mongo.elements)
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")  # Content-Type
+            self.send_header("Content-Length", str(len))
+            self.end_headers()
+            self.wfile.write(json.dumps(response).encode("utf-8"))
+            return
+        
         return super().do_GET()
 
 # Create an HTTP server
 with socketserver.TCPServer(("", PORT), CustomHandler) as httpd:
     print(f"Serving iLearns at http://localhost:{PORT}")
     mongo.csvToCollection("./csv/element_database.csv",mongo.elements)
+    mongo.csvToCollection("./csv/tag_database.csv",mongo.tags)
     try:
         httpd.serve_forever()
     except KeyboardInterrupt:

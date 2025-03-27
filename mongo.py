@@ -9,6 +9,7 @@ db = client['database']
 
 #Create table labled elements
 elements = db["elements"]
+tags = db["tags"]
 
 
 #Function:      Add csv data set to a database collection in MongoDB
@@ -40,7 +41,17 @@ def csvToCollection(data, collection):
 #               collection - Name of table in MongoDB
 #Outputs:       returns document about the prompted element
 def getElementInfo(name, collection):
-    retval=collection.find_one({"Atomic Number":name})
-    del retval['_id']
+    retval=collection.find_one({"Element Name":name})
+    if retval:
+        del retval['_id']
+    else:
+        print(name)
     return retval
     
+def getTagInfo(name, collection):
+    retval=collection.find_one({"Poster1":name})
+    if retval:
+        del retval['_id']
+    else:
+        print(name)
+    return retval
