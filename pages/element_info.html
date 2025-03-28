@@ -255,7 +255,7 @@ document.addEventListener("keydown", function(event) {
         }
         else {
             //Mock Get Request expected to return dictionary of element or None if invalid
-            const element = fetchData("tag-info/" + inputSequence.toLowerCase())
+            const element = fetchData("tag-info/" + inputSequence)
             .then(tag => {
             if (tag["Tag Name"]) {
                 if (tag["Tag Name"] === "element_info") {

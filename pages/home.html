@@ -143,7 +143,7 @@
 
             if (event.key === "Enter") {
                 console.log("Final Input Sequence:", inputSequence); // Debugging log
-                fetchData("tag-info/" + inputSequence.toLowerCase())
+                fetchData("tag-info/" + inputSequence)
                 .then(tag => {
                     if (tag["Tag Name"]) {
                         if (tag["Tag Name"] === "element_info") {

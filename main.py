@@ -15,33 +15,12 @@ class CustomHandler(http.server.SimpleHTTPRequestHandler):
             self.path = "pages"+self.path+".html"
         elif self.path.startswith("/images") and self.path.endswith(".png"):
             self.path = self.path #image paths should be correct with the GET path
-        elif self.path.startswith("/compare-info"):
-            info = self.path[len("/compare-info/"):]  # Get the part after "/compare-info/"
-            response = mongo.getElementInfo(info, mongo.elements)
-            self.send_response(200)  # HTTP status code 200 (OK)
-            self.send_header("Content-Type", "application/json")  # Content-Type
-            self.send_header("Content-Length", str(len))
-            self.end_headers()
-
-            # Convert the dictionary to a JSON string and write it as the response
-            self.wfile.write(json.dumps(response).encode("utf-8"))
-            return
-        elif self.path.startswith("/element-info"):
-            info = self.path[len("/element-info/"):]  # Get the part after "/compare-info/"
-            response = mongo.getElementInfo(info, mongo.elements)
-            self.send_response(200)  # HTTP status code 200 (OK)
-            self.send_header("Content-Type", "application/json")  # Content-Type
-            self.send_header("Content-Length", str(len))
-            self.end_headers()
-
-            # Convert the dictionary to a JSON string and write it as the response
-            self.wfile.write(json.dumps(response).encode("utf-8"))
-            return
-        
         elif self.path.startswith("/tag-info"):
             info = self.path[len("/tag-info/"):]
             response = mongo.getTagInfo(info, mongo.tags)
-            if response["Element"] == "yes":
+            if not response:
+                response = {"Error": "Tag not found"}
+            elif response["Element"] == "yes":
                 element = response["Tag Name"].capitalize()
                 response = mongo.getElementInfo(element, mongo.elements)
             self.send_response(200)

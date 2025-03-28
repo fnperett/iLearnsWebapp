@@ -189,7 +189,7 @@
     document.addEventListener("keydown", function(event) {
       if (event.key === "Enter") {
         console.log(inputSequence)
-        const element = fetchData("tag-info/" + inputSequence.toLowerCase())
+        const element = fetchData("tag-info/" + inputSequence)
         .then(tag => {
         if (tag["Tag Name"]) {
           if (tag["Tag Name"] === "element_info") {
