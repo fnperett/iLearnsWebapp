@@ -55,3 +55,7 @@ def getTagInfo(name, collection):
     else:
         print(name)
     return retval
+
+def updateTag(name, tagID, collection):
+    # Update the tag ID in the database
+    collection.update_one({"Tag Name": name}, {"$set": {"Chem Tag ID": tagID}})

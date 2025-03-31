@@ -29,6 +29,21 @@ class CustomHandler(http.server.SimpleHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(json.dumps(response).encode("utf-8"))
             return
+        elif self.path.startswith("/update-tag"):
+            tag_info = self.path[len("/update-tag/"):].split("/")
+            if len(tag_info) == 2:
+                tag_name = tag_info[0]
+                tag_id = tag_info[1]
+                mongo.updateTag(tag_name, tag_id, mongo.tags)
+                self.send_response(200)
+                self.end_headers()
+                self.wfile.write(b"Tag updated successfully")
+                return
+            else:
+                self.send_response(400)
+                self.end_headers()
+                self.wfile.write(b"Invalid update request")
+                return
         
         return super().do_GET()
 

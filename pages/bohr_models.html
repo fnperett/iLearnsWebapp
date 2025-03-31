@@ -371,6 +371,19 @@
                         getPage('ionic_compound');
                     } else if (tag["Tag Name"] === "home" || tag["Tag Name"] === "back"){ 
                         getPage('');
+                    } else if (tag["Tag Name"] === "plus"){
+                        updateConfig('increment')
+                    } else if (tag["Tag Name"] === "minus"){
+                        updateConfig('decrement')
+                    } else if (tag["Tag Name"] === "left_arrow"){
+                        selectedIndex = (selectedIndex - 1 + options.length) % options.length;
+                        updateSelection();
+                    } else if (tag["Tag Name"] === "right_arrow"){
+                        selectedIndex = (selectedIndex + 1) % options.length;
+                        updateSelection();
+                    }
+                    else {
+                        console.log("Invalid Input")
                     }
                 }
                 else if (tag["Element Name"]){
