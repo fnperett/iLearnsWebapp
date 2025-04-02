@@ -49,7 +49,7 @@ def getElementInfo(name, collection):
     return retval
     
 def getTagInfo(name, collection):
-    retval=collection.find_one({"Chem Tag ID":name})
+    retval=collection.find_one({"Poster2":name})
     if retval:
         del retval['_id']
     else:

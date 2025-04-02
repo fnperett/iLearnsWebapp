@@ -23,6 +23,18 @@
             left: 1%; 
             width: 100%;
             font-size: 24px;
+            font-family: cursive;
+            letter-spacing: -20px;
+            word-spacing: 0;
+            text-shadow: 
+                -1px -1px 0 #000,  
+                1px -1px 0 #000,
+                -1px  1px 0 #000,
+                1px  1px 0 #000; /* Border color */
+        }
+        .page_headder span {
+            display: inline;
+            letter-spacing: 0; /* Ensures no additional spacing */
         }
         .title {
             text-align: center;
@@ -96,7 +108,6 @@
         }
         .control_buttons {
             position: absolute;
-            right: 0;
             bottom: 0;
             display: flex;
             flex-direction: column;
@@ -139,8 +150,23 @@
             font-size: 24px;
             padding: 10px;
             cursor: pointer;
-            position: relative; /* Position arrows at the bottom */
+            position: fixed; /* Position arrows at the bottom */
             bottom: 0;
+        }
+        #left-arrow{
+            right: 150px;
+        }
+        #right-arrow{
+            right: 10px;
+        }
+        #decrement, #increment{
+            position: fixed;
+            right: 80px;
+            bottom:0px;
+        }
+        #increment{
+            right: 80px;
+            bottom: 70px;
         }
         .selected {
             font-weight: bold;
@@ -152,7 +178,15 @@
 </head>
 <body>
     <div class="page_headder">
-        <h1 style="font-family: cursive;">iLearns</h1>
+        <h1 class="multicolor-word">
+            <span style="color: red;">i</span>
+            <span style="color: orange;">L</span>
+            <span style="color: yellow;">e</span>
+            <span style="color: rgb(72, 255, 72);">a</span>
+            <span style="color: rgb(0, 229, 255);">r</span>
+            <span style="color: blue;">n</span>
+            <span style="color: purple;">s</span>
+        </h1>
     </div>
     <div class="title">
         <t style="font-size: 100px;">Bohr Models</t>
