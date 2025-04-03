@@ -66,6 +66,6 @@ def mapTagToElementId(rfidTag:str, elementId:int):
     return mappings.insert_one({"uid":rfidTag,"_id":elementId})
 
 # mapTagToElementId("123",1)
-print(getTagMappings("123"))
-print(tagMappingExists("123"))
-print(elementMappingExists(1))
+# print(getTagMappings("123"))
+# print(tagMappingExists("123"))
+# print(elementMappingExists(1))

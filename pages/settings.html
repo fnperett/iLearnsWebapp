@@ -170,3 +170,63 @@
         width: 75px;
     }
 </style>
+
+
+<script>
+    document.querySelectorAll("button").forEach(button => {
+        button.addEventListener("click", function() {
+            // Set button background to gray
+            let old = this
+            let buttonText = this.textContent.trim()
+            this.style.backgroundColor = "gray";
+    
+            let activeButton = this;
+            let inputText = "";
+    
+            // Listen for keyboard input
+            document.addEventListener("keydown", function handler(event) {
+                if (event.key === "Enter") {
+                    // Send POST request when Enter is pressed
+                    fetch("/", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ button_remap: buttonText, id: inputText })
+                    }).then(response => response.json())
+                      .then(data => console.log("Response:", data))
+                      .catch(error => console.error("Error:", error));
+    
+                    // Reset button background and remove event listener
+                    old.style.backgroundColor = "white";
+                    console.log("changing color back to white")
+                    document.removeEventListener("keydown", handler);
+                } else if (event.key.length === 1) {
+                    // Append typed character to inputText
+                    inputText += event.key;
+                }
+            });
+        });
+    });
+    </script>
+    
+
+<!-- <script>
+    const buttons = document.querySelectorAll("button");
+
+    for (let i = 0; i < buttons.length; i++) {
+        buttons[i].addEventListener("click", function() {
+            buttonText = buttons[i].textContent.trim()
+            console.log("Button clicked:", buttonText);
+            fetch("/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({button_remap : buttonText })
+            })
+            .then(response => response.json())
+            .then(data => console.log("Success:", data))
+            .catch(error => console.error("Error:", error));
+        });
+    }
+
+</script> -->

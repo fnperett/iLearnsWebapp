@@ -6,6 +6,9 @@ async function getPage(page){
     window.location.replace(window.location.origin+'/'+page);
 }
 
+let inputSequence = ""; // Store key sequence
+const maxLength = 32; // Maximum sequence length
+
 document.addEventListener("keydown", function(event) {
     console.log("Key Pressed:", event.key); // Debugging log
 
