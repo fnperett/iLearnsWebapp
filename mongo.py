@@ -10,6 +10,7 @@ db = client['database']
 #Create table labled elements
 elements = db["elements"]
 mappings = db["mappings"]
+tags = db["tags"]
 
 
 #Function:      Add csv data set to a database collection in MongoDB
@@ -65,7 +66,21 @@ def getTagMappings(rfid):
 def mapTagToElementId(rfidTag:str, elementId:int):
     return mappings.insert_one({"uid":rfidTag,"_id":elementId})
 
-# mapTagToElementId("123",1)
-# print(getTagMappings("123"))
-# print(tagMappingExists("123"))
-# print(elementMappingExists(1))
+    retval=collection.find_one({"Element Name":name})
+    if retval:
+        del retval['_id']
+    else:
+        print(name)
+    return retval
+    
+def getTagInfo(name, collection):
+    retval=collection.find_one({"Chem Tag ID":name})
+    if retval:
+        del retval['_id']
+    else:
+        print(name)
+    return retval
+
+def updateTag(name, tagID, collection):
+    # Update the tag ID in the database
+    collection.update_one({"Tag Name": name}, {"$set": {"Chem Tag ID": tagID}})

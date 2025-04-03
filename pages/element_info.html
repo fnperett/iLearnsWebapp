@@ -16,15 +16,18 @@
             overflow: hidden;
             height: 100vh;
             display: flex;
-            align-items: center;
+            align-items: flex-start; /* Align items to the top */
             justify-content: center;
             font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
         }
 
         .wave-container {
             position: absolute;
             width: 100%;
             bottom: 0;
+            z-index: 0; /* Ensure waves are behind text */
         }
 
         .wave {
@@ -36,11 +39,126 @@
             left: 0;
             border-radius: 50%;
             animation: wave-animation 5s infinite linear;
+            opacity: 75%;
         }
 
         .wave:nth-child(2) {
             background: rgba(255, 255, 255, 0.3);
             animation: wave-animation 6s infinite linear reverse;
+        }
+
+        .title {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 8vh; /* Make the title bigger */
+            font-weight: bold;
+            color: white;
+        }
+
+        .element-name {
+            position: absolute;
+            top: 20%; /* Move down to 1/4 of the screen */
+            left: 12.5%; /* Move further to the left */
+            font-size: 9vh; /* Make the element name bigger */
+            font-weight: bolder;
+            color: white;
+            visibility: hidden; /* Hide element name by default */
+            color: white; /* Text color */
+            text-shadow: 
+                -2px -2px 0 #000,  
+                2px -2px 0 #000,
+                -2px  2px 0 #000,
+                2px  2px 0 #000; /* Border color */
+        }           
+        
+
+        .image-container {
+            display: flex;
+            justify-content: space-between;
+            position: absolute;
+            top: 35%; /* Adjust as needed */
+            left: 10px;
+            width: 40vw; /* Adjust width to take up half of the viewport width */
+            height: 30vh;
+            z-index: 1;
+        }
+        .image {
+            width: 48%; /* Adjust width to fit two images side by side */
+            height: auto;
+            background-color: #ffffff; /* Placeholder background color */
+            border: 2px solid #ccc; /* Placeholder border */
+            border-radius: 10px; /* Optional: add border radius */
+            overflow: hidden; /* Hide any overflow */
+            visibility: hidden; /* Hide images by default */
+        }
+
+        .label-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            position: absolute;
+            right: 65px;
+            top: 150px;
+            bottom: 10px; /* Stretch container to the bottom */
+            width: 50vw; /* Adjust width to take up half of the viewport width */
+            max-height: calc(100vh - 90px); /* Ensure container doesn't overflow */
+            overflow-y: auto;
+            z-index: 1; /* Ensure labels are above the waves */
+        }
+        .label {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-bottom: 30px; /* Adjusted space between rows */
+        }
+        .label-title {
+            font-weight: bold;
+            margin-right: 10px;
+            font-size: 4vh; /* Larger starting font size */
+            white-space: nowrap;
+            overflow: visible;
+            text-overflow: ellipsis;
+            max-width: 45%; /* Adjust max-width as needed */
+        }
+        .label-content {
+            font-size: 4vh; /* Larger starting font size */
+            max-width: 45%; /* Adjust max-width as needed */
+        }
+        .page_footer {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            padding: 10px;
+        }
+        .page_headder {
+            position:relative;
+            height: 10%;
+            top: 1%;
+            left: 1%; 
+            width: 100%;
+            font-size: 24px;
+            font-family: cursive;
+            letter-spacing: -20px;
+            word-spacing: 0;
+            text-shadow: 
+                -1px -1px 0 #000,  
+                1px -1px 0 #000,
+                -1px  1px 0 #000,
+                1px  1px 0 #000; /* Border color */
+        }
+        .page_headder span {
+            display: inline;
+            letter-spacing: 0; /* Ensures no additional spacing */
+        }
+        #back-button{
+            width: 100px;
+            height: 100px;
+        }
+        #fun-fact{
+            max-width: 80%;
+            text-align: right;
         }
 
         @keyframes wave-animation {
@@ -50,11 +168,150 @@
     </style>
 </head>
 <body>
-
+    <div class="page_headder">
+        <h1 class="multicolor-word">
+            <span style="color: red;">i</span>
+            <span style="color: orange;">L</span>
+            <span style="color: yellow;">e</span>
+            <span style="color: rgb(72, 255, 72);">a</span>
+            <span style="color: rgb(0, 229, 255);">r</span>
+            <span style="color: blue;">n</span>
+            <span style="color: purple;">s</span>
+        </h1>
+    </div>
     <div class="wave-container">
         <div class="wave"></div>
         <div class="wave"></div>
     </div>
-
+    <div class="title">Element Info</div> <!-- Add title -->
+    <div class="element-name" id="element-name"></div> <!-- Add element name -->
+    <div class="image-container">
+        <img class="image" id="image1"  alt="Image 1" >
+        <img class="image" id="image2" alt="Image 2">
+    </div>
+    <div class="label-container">
+        <div class="label">
+            <div class="label-title">Atomic Number:</div>
+            <div class="label-content" id="atomic-number"></div>
+        </div>
+        <div class="label">
+            <div class="label-title">Oxidation State:</div>
+            <div class="label-content" id="oxidation-state"></div>
+        </div>
+        <div class="label">
+            <div class="label-title">Electronegativity:</div>
+            <div class="label-content" id="electronegativity"></div>
+        </div>
+        <div class="label">
+            <div class="label-title">Electron Configuration:</div>
+            <div class="label-content" id="electron-configuration"></div>
+        </div>
+        <div class="label">
+            <div class="label-title">Atomic Radius:</div>
+            <div class="label-content" id="atomic-radius"></div>
+        </div>
+        <div class="label">
+            <div class="label-title">Ionization Energy:</div>
+            <div class="label-content" id="ionization-energy"></div>
+        </div>
+        <div class="label">
+            <div class="label-title">Melting Point:</div>
+            <div class="label-content" id="melting-point"></div>
+        </div>
+        <div class="label">
+            <div class="label-title">Boiling Point:</div>
+            <div class="label-content" id="boiling-point"></div>
+        </div>
+        <div class="label">
+            <div class="label-title">Year Discovered:</div>
+            <div class="label-content" id="year-discovered"></div>
+        </div>
+        <div class="label">
+            <div class="label-title"><br>Fun Fact:</div>
+            <div class="label-content" id="fun-fact"></div>
+        </div>
+    </div>
+    <div class="page_footer">
+        <button id="back-button" onclick="getRootPage();">
+            <img src="/images_usage/back.png" style="width: -webkit-fill-available;">
+        </button>
+    </div>
 </body>
 </html>
+
+<script src="scripts/global.js"></script>
+<script>
+let inputSequence = ""; // Store key sequence
+const maxLength = 32; // Maximum sequence length
+
+document.addEventListener("keydown", function(event) {
+    console.log("Key Pressed:", event.key); // Debugging log
+
+    if (event.key === "Enter") {
+        console.log("Final Input Sequence:", inputSequence); // Debugging log
+        
+        if (inputSequence == "back"){
+            getPage("home")
+        }
+        else {
+            //Mock Get Request expected to return dictionary of element or None if invalid
+            const element = fetchData("tag-info/" + inputSequence)
+            .then(tag => {
+            if (tag["Tag Name"]) {
+                if (tag["Tag Name"] === "element_info") {
+                    getPage('element_info');
+                } else if (tag["Tag Name"] === "compare") {
+                    getPage('compare');
+                } else if (tag["Tag Name"] === "bohr_models") {
+                    getPage('bohr_models');
+                } else if (tag["Tag Name"] === "ionic_compound") {
+                    getPage('ionic_compound');
+                } else if (tag["Tag Name"] === "home" || tag["Tag Name"] === "back"){ 
+                    getPage('');
+                }
+            }
+            else if (tag["Element Name"]){
+                setElementInfo(tag)
+            }
+            else{
+                console.log("Invalid Input")
+            }
+            inputSequence = "";
+            })
+        }
+        inputSequence = ""; // Reset sequence after Enter
+    } else if (/^[a-zA-Z0-9]$/.test(event.key)) { 
+        // Append key only if it's alphanumeric & within limit
+        if (inputSequence.length < maxLength) {
+            inputSequence += event.key;
+        } else {
+            console.log("⚠️ Input limit reached (32 chars). Ignoring extra input.");
+        }
+    }
+});
+
+function setElementInfo(element_dict){
+    document.getElementById("element-name").innerHTML = element_dict["Element Name"]
+    document.getElementById("element-name").style.visibility = "visible"
+
+    document.getElementById("atomic-number").innerHTML = element_dict["Atomic Number"]
+    document.getElementById("oxidation-state").innerHTML = element_dict["Oxidation State"]
+    document.getElementById("electronegativity").innerHTML = element_dict["Electronegativity "]
+    document.getElementById("electron-configuration").innerHTML = element_dict["Electron Configuration"]
+    document.getElementById("atomic-radius").innerHTML = element_dict["Atomic Radius"] + ' pm'
+    document.getElementById("ionization-energy").innerHTML = element_dict["Ionization Energy"] + ' kJ/mol'
+    document.getElementById("melting-point").innerHTML = element_dict["Melting Point"] + ' K'
+    document.getElementById("boiling-point").innerHTML = element_dict["Boiling Point"] + ' K'
+    document.getElementById("year-discovered").innerHTML = element_dict["Year Discovered"]
+    document.getElementById("fun-fact").innerHTML = element_dict["Fun Fact"]
+
+    
+    document.getElementById("image1").src = "/images_form/"+element_dict["Element Name"].toLowerCase()+"-form.jpg"
+    console.log(document.getElementById("image1").src)
+    document.getElementById("image1").style.visibility = "visible"
+
+    document.getElementById("image2").src = "/images_usage/"+element_dict["Element Name"].toLowerCase()+"-usage.jpg"
+    document.getElementById("image2").style.visibility = "visible"
+    
+}
+</script>

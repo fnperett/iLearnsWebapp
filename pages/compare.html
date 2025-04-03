@@ -1,53 +1,280 @@
-<script src="scripts/global.js"></script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Element Comparison</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-<html>
+    body {
+      background: #e6ed6d;
+      overflow: hidden;
+      height: 100vh;
+      font-family: Arial, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .container {
+      width: 100%;
+      height: 100vh;
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    h2 {
+      margin-bottom: 40px;
+      color: white;
+      text-shadow: 1px 1px 4px rgba(0,0,0,0.5);
+      font-size: 4rem;
+    }
+
+    .comparison-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+      width: 100%;
+      max-width: 1800px;
+    }
+
+    .element-image {
+      width: 300px;
+      height: 300px;
+      object-fit: contain;
+      border-radius: 20px;
+      background-color: rgba(255, 255, 255, 0.8);
+      padding: 15px;
+      visibility: hidden;
+    }
+
+    .comparison-table {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 60px;
+      width: 100%;
+    }
+
+    .column {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .column div,
+    .middle-column div {
+      padding: 10px 0;
+      text-align: center;
+      font-size: 2rem;
+      font-weight: 500;
+    }
+
+    .column div:first-child {
+      font-size: 3rem;
+      font-weight: 700;
+    }
+
+    .middle-column div {
+      font-weight: 700;
+    }
+    .page_footer {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      padding: 10px;
+      z-index: 1;
+    }
+    .page_headder {
+      position:relative;
+      height: 10%;
+      top: -10%;
+      left: 1%; 
+      width: 100%;
+      font-size: 24px;
+      font-family: cursive;
+      letter-spacing: -20px;
+      word-spacing: 0;
+      text-shadow: 
+          -1px -1px 0 #000,  
+          1px -1px 0 #000,
+          -1px  1px 0 #000,
+          1px  1px 0 #000; /* Border color */
+    }
+    .page_headder span {
+        display: inline;
+        letter-spacing: 0; /* Ensures no additional spacing */
+    }
+    #back-button{
+      width: 100px;
+      height: 100px;
+    }
+  </style>
+</head>
+<body>
+
+  
+
+  <div class="container">
+    <h2>Element Comparison</h2>
+
     <div class="page_headder">
-        <div>
-            <h1 style="font-family: cursive;">iLearns</h1>
-            <div class="title">
-                <t style="font-size: 100px;">
-                    Compare
-                </t>
-            </div>
+      <h1 class="multicolor-word">
+          <span style="color: red;">i</span>
+          <span style="color: orange;">L</span>
+          <span style="color: yellow;">e</span>
+          <span style="color: rgb(72, 255, 72);">a</span>
+          <span style="color: rgb(0, 229, 255);">r</span>
+          <span style="color: blue;">n</span>
+          <span style="color: purple;">s</span>
+      </h1>
+  </div>
+
+    <div class="comparison-wrapper">
+      <!-- Left Image -->
+      <img id="left-image" alt="Element Image" class="element-image">
+
+      <!-- Table -->
+      <div class="comparison-table">
+        <!-- Left Element -->
+        <div id="element-1" class="column">
+          <div>Waiting...</div>
+          <div>-</div>
+          <div>-</div>
+          <div>-</div>
+          <div>-</div>
+          <div>-</div>
+          <div>-</div>
+          <div>-</div>
+          <div>-</div>
+          <div>-</div>
         </div>
-    </div>
-    <div class="page_body">
-        <div>
-            <button class="select_button">
-                Select Element
-            </button>
+
+        <!-- Characteristic Names -->
+        <div class="column middle-column">
+          <div>Element Name</div>
+          <div>Symbol</div>
+          <div>Atomic Number</div>
+          <div>Group</div>
+          <div>Period</div>
+          <div>Category</div>
+          <div>Phase at STP</div>
+          <div>Electronegativity</div>
+          <div>Density</div>
+          <div>Atomic Weight</div>
         </div>
+
+        <!-- Right Element -->
+        <div id="element-2" class="column">
+          <div>Waiting...</div>
+          <div>-</div>
+          <div>-</div>
+          <div>-</div>
+          <div>-</div>
+          <div>-</div>
+          <div>-</div>
+          <div>-</div>
+          <div>-</div>
+          <div>-</div>
+        </div>
+      </div>
+
+      <!-- Right Image -->
+      <img id="right-image" alt="Element Image" class="element-image">
     </div>
-    <div class="page_footer">
-        <button onclick="getRootPage();">
-            <img src="/images/back.png" style="width: -webkit-fill-available;">
-        </button>
-    </div>
+  </div>
+  
+  <div class="page_footer">
+    <button id="back-button" onclick="getRootPage();">
+        <img src="/images_usage/back.png" style="width: -webkit-fill-available;">
+    </button>
+  </div>
+
+  <script src="scripts/global.js"></script>
+
+  <script>
+    let inputSequence = "";
+    const maxLength = 32;
+    let elementQueue = [];
+
+    document.addEventListener("keydown", function(event) {
+      if (event.key === "Enter") {
+        console.log(inputSequence)
+        const element = fetchData("tag-info/" + inputSequence)
+        .then(tag => {
+        if (tag["Tag Name"]) {
+          if (tag["Tag Name"] === "element_info") {
+              getPage('element_info');
+          } else if (tag["Tag Name"] === "compare") {
+              getPage('compare');
+          } else if (tag["Tag Name"] === "bohr_models") {
+              getPage('bohr_models');
+          } else if (tag["Tag Name"] === "ionic_compound") {
+              getPage('ionic_compound');
+          } else if (tag["Tag Name"] === "home" || tag["Tag Name"] === "back"){ 
+              getPage('');
+          }
+        }
+        else if (tag["Element Name"]){
+            updateElements(tag)
+        }
+        else{
+            console.log("Invalid Input")
+        }
+        inputSequence = "";
+        })
+    
+    inputSequence = ""; // Reset sequence after Enter
+      } else if (/^[a-zA-Z0-9]$/.test(event.key)) {
+        if (inputSequence.length < maxLength) {
+          inputSequence += event.key;
+        }
+      }
+    });
+
+    function updateElements(newElement) {
+      if (elementQueue.length < 2) {
+        elementQueue.push(newElement);
+      } else {
+        elementQueue.shift();
+        elementQueue.push(newElement);
+      }
+      setElementInfo("element-1", elementQueue[0], "left-image");
+      if (elementQueue[1]) {
+        setElementInfo("element-2", elementQueue[1], "right-image");
+      }
+    }
+
+    function setElementInfo(columnId, element, imageId) {
+      const values = [
+        element["Element Name"],
+        element["Symbol"],
+        element["Atomic Number"],
+        element["Group"],
+        element["Period"],
+        element["Category"],
+        element["Phase at STP"],
+        element["Electronegativity "],
+        element["Density"]+ ' g/cm<sup>3</sup>',
+        element["Atomic Weight"]+ ' u',
+      ];
+      const column = document.getElementById(columnId).children;
+      for (let i = 0; i < values.length; i++) {
+        column[i].innerHTML = values[i];
+      }
+      document.getElementById(imageId).src = "/images_config/"+element["Element Name"].toLowerCase()+"-electron-configuration.jpg";
+      document.getElementById(imageId).style.visibility = "visible";
+    }
+  </script>
+
+</body>
 </html>
-
-
-
-<style>
-    .page_headder{
-        height: 10%;
-    }
-    .title{
-        text-align: center;
-    }
-    .page_body{
-        height: 80%;
-        text-align: center;
-        align-content: center;
-    }
-
-    .select_button{
-        height: 30%;
-        width: 40%;
-        text-align: center;
-    }
-
-    .page_footer button{
-        height: 75px;
-        width: 75px;
-    }
-</style>

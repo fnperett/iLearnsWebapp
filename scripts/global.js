@@ -1,35 +1,33 @@
+let posterid = "Poster1";
+
 async function getRootPage(){
-    window.location.replace(window.location.origin);
+  window.location.replace(window.location.origin);
 }
 
 async function getPage(page){
-    window.location.replace(window.location.origin+'/'+page);
+  window.location.replace(window.location.origin+'/'+page);
 }
 
-let inputSequence = ""; // Store key sequence
-const maxLength = 32; // Maximum sequence length
 
-document.addEventListener("keydown", function(event) {
-    console.log("Key Pressed:", event.key); // Debugging log
-
-    if (event.key === "Enter") {
-        console.log("Final Input Sequence:", inputSequence); // Debugging log
-
-        if (inputSequence === "7200774E84") {
-            console.log("Sequence recognized!");
-            getPage("compare")
-        } else {
-            console.log("Wrong sequence:", inputSequence);
-        }
-
-        inputSequence = ""; // Reset sequence after Enter
-    } else if (/^[a-zA-Z0-9]$/.test(event.key)) { 
-        // Append key only if it's alphanumeric & within limit
-        if (inputSequence.length < maxLength) {
-            inputSequence += event.key;
-        } else {
-            console.log("⚠️ Input limit reached (32 chars). Ignoring extra input.");
-        }
+async function fetchData(url) {
+    try {
+    //url="localhost/80/" + url
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+  
+      const data = await response.json(); // Parse JSON from the response
+      console.log('Data received:', data); // Handle the retrieved data
+      return await data; // Return the data if needed
+    } catch (error) {
+      console.error('There was a problem with the fetch operation:', error); // Handle errors
+      throw error; // Propagate the error if needed
     }
-});
-
+}
