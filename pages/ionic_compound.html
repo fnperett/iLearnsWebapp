@@ -1,6 +1,6 @@
 <script src="scripts/global.js"></script>
 
-<html>
+<!-- <html>
     <div class="page_headder">
         <div>
             <h1 style="font-family: cursive;">iLearns</h1>
@@ -23,31 +23,225 @@
             <img src="/images_usage/back.png" style="width: -webkit-fill-available;">
         </button>
     </div>
-</html>
+</html> -->
 
 
 
-<style>
-    .page_headder{
-        height: 10%;
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <div class="page_headder">
+        <div>
+            <h1 style="font-family: cursive;">iLearns</h1>
+            <div class="title">
+                <t style="font-size: 100px;">
+                    Ionic Compound
+                </t>
+            </div>
+        </div>
+    </div>
+    <div class="page_body">
+        <div>
+            <title>Interlocking Blocks</title>
+            <div class="controls">
+                <button onclick="addBlock('left')">Add Left Block</button>
+                <button onclick="addBlock('right')">Add Right Block</button>
+            </div>
+            
+            <div class="container">
+                <div id="left-list" class="list left"></div>
+                <div id="right-list" class="list right"></div>
+            </div>
+        </div>
+    </div>
+    <div class="page_footer">
+        <button onclick="getRootPage();">
+            <img src="/images/back.png" style="width: -webkit-fill-available;">
+        </button>
+    </div>
+</head>
+<body>
+
+    <style>
+        .page_headder{
+            height: 10%;
+        }
+        .title{
+            text-align: center;
+        }
+        .page_body{
+            height: 80%;
+            text-align: center;
+            align-content: center;
+        }
+    
+        .select_button{
+            height: 30%;
+            width: 40%;
+            text-align: center;
+        }
+    
+        .page_footer button{
+            height: 75px;
+            width: 75px;
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        .container {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+        }
+        .list {
+            display: flex;
+            flex-direction: column;
+        }
+        .block {
+            width: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 24px;
+            padding: 10px;
+            box-sizing: border-box;
+            margin: 2px 0;
+            transition: all 0.2s ease-in-out;
+        }
+        .left .block {
+            background-color: #4A90E2;
+        }
+        .right .block {
+            background-color: #e24a4a;
+        }
+        /* .selected {
+            animation: pulse 1s infinite alternate;
+            filter: drop-shadow(0px 0px 5px red);
+        } */
+        /* @keyframes pulse {
+            
+        } */
+        .selected {
+            border: 4px solid rgb(0, 255, 47);
+            animation: pulse 1s infinite alternate;
+        }
+        @keyframes pulse {
+            0% { border-color: rgb(0, 255, 47); }
+            100% { border-color: rgba(255, 255, 255, 0); }
+        }
+        .controls {
+            margin-bottom: 20px;
+        }
+    </style>
+    
+
+<script>
+    let selectedBlock = null;
+
+
+    function generateBlock(size, side, elementName) {
+        const block = document.createElement('div');
+        block.className = 'block';
+        block.dataset.size = size;
+        block.dataset.side = side;
+        block.dataset.elementName = elementName
+        block.style.height = `${(60 * size) + ((size * size) / 2.5)}px`;
+        block.style.width = '200px';
+        block.innerText = side === 'left' ? `${elementName} +${size}` : `${elementName} -${size}`;
+        block.style.clipPath = side === 'left' ? generateLeftClipPath(size) : generateRightClipPath(size);
+        return block;
     }
-    .title{
-        text-align: center;
-    }
-    .page_body{
-        height: 80%;
-        text-align: center;
-        align-content: center;
+    
+    function generateLeftClipPath(size) {
+        let points = ['0 0', '85% 0'];
+        for (let i = 0; i < size; i++) {
+            let y1 = (i / size) * 100;
+            let y2 = ((i + 0.5) / size) * 100;
+            let y3 = ((i + 1) / size) * 100;
+            points.push(`100% ${y1}%`, `85% ${y2}%`, `100% ${y3}%`);
+        }
+        points.push('0 100%');
+        return `polygon(${points.join(', ')})`;
     }
 
-    .select_button{
-        height: 30%;
-        width: 40%;
-        text-align: center;
+    function generateRightClipPath(size) {
+        let points = ['100% 0', '15% 0'];
+        for (let i = 0; i < size; i++) {
+            let y1 = (i / size) * 100;
+            let y2 = ((i + 0.5) / size) * 100;
+            let y3 = ((i + 1) / size) * 100;
+            points.push(`15% ${y1}%`, `0% ${y2}%`, `15% ${y3}%`);
+        }
+        points.push('100% 100%');
+        return `polygon(${points.join(', ')})`;
     }
 
-    .page_footer button{
-        height: 75px;
-        width: 75px;
+    function addBlock(side, elementName = "Null") {
+        const list = document.getElementById(`${side}-list`);
+        let size = parseInt(prompt(`Enter size for ${side} block:`));
+        if (!isNaN(size) && size > 0) {
+            const newBlock = generateBlock(size, side, elementName);
+            list.appendChild(newBlock);
+            selectBlock(newBlock);  // Auto-select new block
+        }
     }
-</style>
+
+    function selectBlock(block) {
+        if (selectedBlock) {
+            selectedBlock.classList.remove('selected');
+        }
+        selectedBlock = block;
+        if (selectedBlock) {
+            selectedBlock.classList.add('selected');
+        }
+    }
+
+    function changeBlockSize(change) {
+        if (!selectedBlock) return;
+
+        let newSize = parseInt(selectedBlock.dataset.size) + change;
+        let side = selectedBlock.dataset.side;
+
+        if (newSize < 1) {
+            // Remove block if size reaches 0
+            let list = selectedBlock.parentNode;
+            let prevBlock = selectedBlock.previousElementSibling;
+            selectedBlock.remove();
+            selectBlock(prevBlock); // Move selection up
+        } else {
+            selectedBlock.dataset.size = newSize;
+            elementName = selectedBlock.dataset.elementName;
+            selectedBlock.innerText = side === 'left' ? `${elementName} +${newSize}` : `${elementName} -${newSize}`;
+            selectedBlock.style.height = `${(60 * newSize) + ((newSize * newSize) / 2.5)}px`;
+            selectedBlock.style.clipPath = side === 'left' ? generateLeftClipPath(newSize) : generateRightClipPath(newSize);
+        }
+    }
+
+    function selectLatestBlock(side) {
+        let list = document.getElementById(`${side}-list`);
+        let latestBlock = list.lastElementChild;
+        if (latestBlock) selectBlock(latestBlock);
+    }
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'ArrowLeft') {
+            selectLatestBlock('left');
+        } else if (event.key === 'ArrowRight') {
+            selectLatestBlock('right');
+        } else if (event.key === '+' || event.key === '=') {  // `=` is on the same key as `+`
+            changeBlockSize(1);
+        } else if (event.key === '-') {
+            changeBlockSize(-1);
+        }
+    });
+</script>

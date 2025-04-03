@@ -9,6 +9,7 @@ db = client['database']
 
 #Create table labled elements
 elements = db["elements"]
+mappings = db["mappings"]
 tags = db["tags"]
 
 
@@ -41,6 +42,30 @@ def csvToCollection(data, collection):
 #               collection - Name of table in MongoDB
 #Outputs:       returns document about the prompted element
 def getElementInfo(name, collection):
+    return collection.find_one({"Element Name":name})
+
+def tagMappingExists(rfid:str):
+    try:
+        if mappings.find_one({"uid":rfid}) == None:
+            return False
+        return True
+    except:
+        return False
+    
+def elementMappingExists(elementId:int):
+    try:
+        if mappings.find_one({"_id":elementId}) == None:
+            return False
+        return True
+    except:
+        return False
+
+def getTagMappings(rfid):
+    return mappings.find_one({"uid":rfid})
+
+def mapTagToElementId(rfidTag:str, elementId:int):
+    return mappings.insert_one({"uid":rfidTag,"_id":elementId})
+
     retval=collection.find_one({"Element Name":name})
     if retval:
         del retval['_id']

@@ -8,6 +8,7 @@ async function getPage(page){
   window.location.replace(window.location.origin+'/'+page);
 }
 
+
 async function fetchData(url) {
     try {
     //url="localhost/80/" + url

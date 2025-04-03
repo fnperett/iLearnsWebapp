@@ -38,8 +38,8 @@
         </div>
     </div>
     <div class="page_footer">
-        <button>
-            <img src="/images_usage/gear.png" style="width: -webkit-fill-available;">
+        <button onclick="getPage('settings')">
+            <img src="/images/gear.png" style="width: -webkit-fill-available;">
         </button>
     </div>
 </html>
@@ -143,6 +143,7 @@
 
             if (event.key === "Enter") {
                 console.log("Final Input Sequence:", inputSequence); // Debugging log
+
                 fetchData("tag-info/" + inputSequence)
                 .then(tag => {
                     if (tag["Tag Name"]) {
@@ -161,7 +162,7 @@
                 .catch(error => {
                     console.error("Error fetching data:", error);
                 });
-
+              
                 inputSequence = ""; // Reset sequence after Enter
             } else if (/^[a-zA-Z0-9]$/.test(event.key)) { 
                 // Append key only if it's alphanumeric & within limit
