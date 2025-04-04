@@ -141,7 +141,7 @@
         document.addEventListener("keydown", function(event) {
             console.log("Key Pressed:", event.key); // Debugging log
 
-            if (event.key === "Enter") {
+            if (event.key === "Enter" && inputSequence != "") {
                 console.log("Final Input Sequence:", inputSequence); // Debugging log
 
                 fetchData("tag-info/" + inputSequence)

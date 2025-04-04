@@ -74,7 +74,7 @@ def mapTagToElementId(rfidTag:str, elementId:int):
    
     
 def getTagInfo(name, collection):
-    retval=collection.find_one({"Poster2":name})
+    retval=collection.find_one({"Chem Tag ID":name})
     if retval:
         del retval['_id']
     else:

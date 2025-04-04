@@ -247,7 +247,7 @@ const maxLength = 32; // Maximum sequence length
 document.addEventListener("keydown", function(event) {
     console.log("Key Pressed:", event.key); // Debugging log
 
-    if (event.key === "Enter") {
+    if (event.key === "Enter" && inputSequence != "") {
         console.log("Final Input Sequence:", inputSequence); // Debugging log
         
         if (inputSequence == "back"){

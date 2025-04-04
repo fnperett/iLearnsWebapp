@@ -428,7 +428,7 @@
     document.addEventListener("keydown", function(event) {
     console.log("Key Pressed:", event.key); // Debugging log
 
-    if (event.key === "Enter") {
+    if (event.key === "Enter" && inputSequence != "") {
         console.log("Final Input Sequence:", inputSequence); // Debugging log
         
         if (inputSequence == "back"){
@@ -454,6 +454,7 @@
                     checkNeutralized();
                 } else if (tag["Tag Name"] === "minus"){
                     changeBlockSize(-1);
+                    checkNeutralized();
                 } else if (tag["Tag Name"] === "left_arrow"){
                     selectBlock('left');
                 } else if (tag["Tag Name"] === "right_arrow"){
