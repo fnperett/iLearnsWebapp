@@ -42,7 +42,12 @@ def csvToCollection(data, collection):
 #               collection - Name of table in MongoDB
 #Outputs:       returns document about the prompted element
 def getElementInfo(name, collection):
-    return collection.find_one({"Element Name":name})
+    retval=collection.find_one({"Element Name":name})
+    if retval:
+        del retval['_id']
+    else:
+        print(name)
+    return retval
 
 def tagMappingExists(rfid:str):
     try:
@@ -66,15 +71,10 @@ def getTagMappings(rfid):
 def mapTagToElementId(rfidTag:str, elementId:int):
     return mappings.insert_one({"uid":rfidTag,"_id":elementId})
 
-    retval=collection.find_one({"Element Name":name})
-    if retval:
-        del retval['_id']
-    else:
-        print(name)
-    return retval
+   
     
 def getTagInfo(name, collection):
-    retval=collection.find_one({"Chem Tag ID":name})
+    retval=collection.find_one({"Poster2":name})
     if retval:
         del retval['_id']
     else:
