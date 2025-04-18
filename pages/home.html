@@ -4,8 +4,14 @@
     <canvas id="wave" style="position: absolute; z-index: -1;"></canvas>
     <div class="page_body">
         <div>
-            <t style="font-size: 12cqw; font-family: cursive;">
-                iLearns
+            <t class="title">
+                <span style="color: red;">i</span>
+                <span style="color: orange;">L</span>
+                <span style="color: yellow;">e</span>
+                <span style="color: rgb(72, 255, 72);">a</span>
+                <span style="color: rgb(0, 229, 255);">r</span>
+                <span style="color: blue;">n</span>
+                <span style="color: purple;">s</span>
             </t>
         </div>
         <div class="buttons">
@@ -32,8 +38,8 @@
         </div>
     </div>
     <div class="page_footer">
-        <button>
-            <img src="/images/gear.png" style="width: -webkit-fill-available;">
+        <button onclick="getPage('settings')">
+            <img src="/images_usage/gear.png" style="width: -webkit-fill-available;">
         </button>
     </div>
 </html>
@@ -67,6 +73,17 @@
         width: 100%;
         height: 100%;
         overflow: hidden;
+    }
+    .title{
+        font-size: 12cqw;
+        font-family: cursive;
+        letter-spacing: -30px;
+        word-spacing: 0;
+        text-shadow: 
+            -1.5px -1.5px 0 #000,  
+            1.5px -1.5px 0 #000,
+            -1.5px  1.5px 0 #000,
+            1.5px  1.5px 0 #000; /* Border color */
     }
 
     @keyframes wave-animation {
@@ -124,16 +141,28 @@
         document.addEventListener("keydown", function(event) {
             console.log("Key Pressed:", event.key); // Debugging log
 
-            if (event.key === "Enter") {
+            if (event.key === "Enter" && inputSequence != "") {
                 console.log("Final Input Sequence:", inputSequence); // Debugging log
 
-                if (inputSequence === "6E006B3845") {
-                    console.log("Sequence recognized!");
-                    getPage("compare")
-                } else {
-                    console.log("Wrong sequence:", inputSequence);
-                }
-
+                fetchData("tag-info/" + inputSequence)
+                .then(tag => {
+                    if (tag["Tag Name"]) {
+                        if (tag["Tag Name"] === "element_info") {
+                            getPage('element_info');
+                        } else if (tag["Tag Name"] === "compare") {
+                            getPage('compare');
+                        } else if (tag["Tag Name"] === "bohr_models") {
+                            getPage('bohr_models');
+                        } else if (tag["Tag Name"] === "ionic_compound") {
+                            getPage('ionic_compound');
+                        }
+                    }
+                    inputSequence = "";
+                })
+                .catch(error => {
+                    console.error("Error fetching data:", error);
+                });
+              
                 inputSequence = ""; // Reset sequence after Enter
             } else if (/^[a-zA-Z0-9]$/.test(event.key)) { 
                 // Append key only if it's alphanumeric & within limit

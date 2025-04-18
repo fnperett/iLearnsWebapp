@@ -1,53 +1,459 @@
-<script src="scripts/global.js"></script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="scripts/global.js"></script>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            background-color: rgb(248, 106, 106); /* Set background color to red */
+        }
+        .page_headder {
+            position:relative;
+            height: 10%;
+            top: 1%;
+            left: 1%; 
+            width: 100%;
+            font-size: 24px;
+            font-family: cursive;
+            letter-spacing: -20px;
+            word-spacing: 0;
+            text-shadow: 
+                -1px -1px 0 #000,  
+                1px -1px 0 #000,
+                -1px  1px 0 #000,
+                1px  1px 0 #000; /* Border color */
+        }
+        .page_headder span {
+            display: inline;
+            letter-spacing: 0; /* Ensures no additional spacing */
+        }
+        .title {
+            text-align: center;
+        }
+        .page_body {
+            height: 80%;
+            display: flex;
+            align-items: center;
+        }
+        .info_section {
+            width: 30%;
+            padding: 20px;
+            text-align: left;
+            font-size: 30px; /* Increased font size */
+            font-family: Arial, sans-serif;
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .container {
+            position: relative;
+            width: 600px; /* Increased the container size */
+            height: 600px; /* Increased the container size */
+            top: 20px; /* Adjust this value to lower the ring container */
+            flex: 1;
+        }
+        .ring {
+            position: absolute;
+            border: 1px solid black;
+            border-radius: 50%;
+        }
+        .electron {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: rgb(38, 0, 255); /* Blue electrons */
+            border-radius: 50%;
+        }
+        .inner-circle {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 2px solid black;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            font-family: Arial, sans-serif;
+            background-color: transparent; /* No color */
+            flex-direction: column;
+            z-index: 1; /* Ensure the inner circle stays above other elements */
+        }
+        .inner-circle p {
+            margin: 0; /* Remove the default margin */
+            line-height: 1.5;/*just the line height */
+        }
+        .page_footer {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            padding: 10px;
+        }
+        .page_footer button {
+            height: 75px;
+            width: 75px;
+        }
+        .control_buttons {
+            position: absolute;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            padding: 10px;
+        }
+        .control_buttons button {
+            margin: 5px;
+            width: 50px;
+            height: 50px;
+            font-size: 24px;
+            text-align: center;
+        }
+        .options_section {
+            width: 30%;
+            padding: 10px;
+            text-align: left;
+            font-size: 24px;
+            font-family: Arial, sans-serif;
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 10px; /* Adjust the gap as needed */
+        }
 
-<html>
+        .protons-neutrons {
+            display: flex;
+            flex-direction: row;
+            gap: 20px;
+        }
+
+        #element-name {
+            font-size: 50px;
+            font-weight: bold;
+        }
+
+        #left-arrow, #right-arrow {
+            font-size: 24px;
+            padding: 10px;
+            cursor: pointer;
+            position: fixed; /* Position arrows at the bottom */
+            bottom: 0;
+        }
+        #left-arrow{
+            right: 150px;
+        }
+        #right-arrow{
+            right: 10px;
+        }
+        #decrement, #increment{
+            position: fixed;
+            right: 80px;
+            bottom:0px;
+        }
+        #increment{
+            right: 80px;
+            bottom: 70px;
+        }
+        .selected {
+            font-weight: bold;
+        }
+
+
+    </style>
+    <title>Bohr Models</title>
+</head>
+<body>
     <div class="page_headder">
-        <div>
-            <h1 style="font-family: cursive;">iLearns</h1>
-            <div class="title">
-                <t style="font-size: 100px;">
-                    Bohr Models
-                </t>
-            </div>
-        </div>
+        <h1 class="multicolor-word">
+            <span style="color: red;">i</span>
+            <span style="color: orange;">L</span>
+            <span style="color: yellow;">e</span>
+            <span style="color: rgb(72, 255, 72);">a</span>
+            <span style="color: rgb(0, 229, 255);">r</span>
+            <span style="color: blue;">n</span>
+            <span style="color: purple;">s</span>
+        </h1>
+    </div>
+    <div class="title">
+        <t style="font-size: 100px;">Bohr Models</t>
     </div>
     <div class="page_body">
-        <div>
-            <button class="select_button">
-                Select Element
-            </button>
+        <div class="info_section">
+            <p><strong>Element Name:</strong> <span id="element-name"></span></p>
+            <p><strong>Outer Electrons:</strong> <span id="outer-electrons"></span></p>
+            <p><strong>Current Charge:</strong> <span id="current-charge"></span></p>
+            <p><strong>Current Atomic Weight:</strong> <span id="atomic-weight"></span></p>
+            <p><strong>Current Configuration:</strong> <span id="current-config"></span></p> <!-- New line for configuration -->
         </div>
+        <div class="container" id="ring">
+            <div class="inner-circle" id="element-symbol">
+                <p>P: <span id="proton-count">0</span></p>
+                <p>N: <span id="neutron-count">0</span></p>
+            </div>
+        </div>
+        <div class="options_section">
+            <div class="protons-neutrons">
+                <p id="electrons-text">Electrons: <span id="electrons">0</span></p>
+                <p id="neutrons-text">Neutrons: <span id="neutrons">0</span></p>
+            </div>
+        </div>
+                             
     </div>
     <div class="page_footer">
         <button onclick="getRootPage();">
-            <img src="/images/back.png" style="width: -webkit-fill-available;">
+            <img src="/images_usage/back.png" style="width: -webkit-fill-available;">
         </button>
     </div>
+    <div class="control_buttons">
+        <button id="increment">+</button>
+        <button id="decrement">-</button>
+        <button id="left-arrow">&#8592;</button> <!-- Left arrow button -->
+        <button id="right-arrow">&#8594;</button> <!-- Right arrow button -->
+    </div>
+    <script>
+
+        function placeElectrons(rings) {
+            proton_count = document.getElementById('proton-count').textContent;
+            neutron_count = document.getElementById('neutron-count').textContent;
+            const container = document.getElementById('ring');
+            container.innerHTML = ''; // Clear previous electrons and rings
+            const innerCircle = document.createElement('div');
+            innerCircle.className = 'inner-circle';
+            innerCircle.id = 'element-symbol';
+            innerCircle.innerHTML = "<p>P: <span id='proton-count'></span></p><p>N: <span id='neutron-count'></span></p>";
+            container.appendChild(innerCircle); // Add the inner circle back
+            document.getElementById('proton-count').textContent = proton_count;
+            document.getElementById('neutron-count').textContent = neutron_count;
+            const radiusIncrement = container.offsetWidth / (1.5 * rings.length + 1); // Increased the radius increment
+            const centerX = container.offsetWidth / 2;
+            const centerY = container.offsetHeight / 2;
+            
+            rings.forEach((numElectrons, index) => {
+                if (numElectrons > 0) {
+                    const radius = radiusIncrement * (index + 1);
+
+                    // Create ring element
+                    const ring = document.createElement('div');
+                    ring.className = 'ring';
+                    ring.style.width = `${2 * radius}px`;
+                    ring.style.height = `${2 * radius}px`;
+                    ring.style.left = `${centerX - radius}px`;
+                    ring.style.top = `${centerY - radius}px`;
+                    container.appendChild(ring);
+                    
+                    const angleStep = 2 * Math.PI / numElectrons;
+                    
+                    for (let i = 0; i < numElectrons; i++) {
+                        const angle = i * angleStep;
+                        const x = centerX + radius * Math.cos(angle) - 10; // Subtract 10 to center the circles
+                        const y = centerY + radius * Math.sin(angle) - 10;
+                        const electron = document.createElement('div');
+                        electron.className = 'electron';
+                        electron.style.left = `${x}px`;
+                        electron.style.top = `${y}px`;
+                        container.appendChild(electron);
+                    }
+                }
+            });
+        }
+
+        function parseConfiguration(configString) {
+            return configString.split('-').map(Number);
+        }
+
+        function updateConfig(action) {
+            let configList = parseConfiguration(currentConfig);
+            if (selectedIndex === 0) { // Only modify electrons if electrons are selected
+                if (action === 'increment') {
+                    configList[configList.length - 1]++;
+                } else if (action === 'decrement' && configList[configList.length - 1] > 0) {
+                    configList[configList.length - 1]--;
+                }
+                currentConfig = configList.join('-');
+                placeElectrons(configList);
+
+                // Update the current configuration text
+                document.getElementById('current-config').textContent = currentConfig;
+
+                // Calculate the total number of electrons and update the text
+                const totalElectrons = configList.reduce((total, num) => total + num, 0);
+                document.getElementById('electrons').textContent = totalElectrons;
+                if (document.getElementById('proton-count').textContent != 0){
+                    let protons = parseInt(document.getElementById('proton-count').textContent);
+                    let charge = protons - totalElectrons;
+                    if (charge <= 0) {
+                        document.getElementById('current-charge').textContent = charge
+                    } else {
+                        document.getElementById('current-charge').textContent = "+" + charge
+                    }
+                }
+            } else if (selectedIndex === 1) { // Only modify neutrons if neutrons are selected
+                const neutronsElement = document.getElementById('neutrons');
+                let neutrons = parseInt(neutronsElement.textContent);
+                if (action === 'increment') {
+                    neutrons++;
+                } else if (action === 'decrement' && neutrons > 0) {
+                    neutrons--;
+                }
+                neutronsElement.textContent = neutrons;
+                document.getElementById('neutron-count').textContent = neutrons;
+                const protons = parseInt(document.getElementById('proton-count').textContent);
+                const neutron = parseInt(document.getElementById('neutrons').textContent);
+                const atomicWeight = protons + neutron;
+                document.querySelector('#atomic-weight').textContent = `${atomicWeight} u`;
+
+            }
+
+            // Adjust the configuration based on max electrons per ring
+            for (let i = 0; i < configList.length; i++) {
+                if (configList[i] > maxElectronsPerRing[i]) {
+                    const excessElectrons = configList[i] - maxElectronsPerRing[i];
+                    configList[i] = maxElectronsPerRing[i];
+                    if (configList[i + 1] !== undefined) {
+                        configList[i + 1] += excessElectrons;
+                    } else if (i + 1 < maxElectronsPerRing.length) {
+                        configList.push(excessElectrons);
+                    }
+                }
+            }
+
+            // Remove empty trailing rings
+            while (configList.length > 1 && configList[configList.length - 1] === 0) {
+                configList.pop();
+            }
+
+            currentConfig = configList.join('-');
+            placeElectrons(configList);
+
+            // Update the current configuration text
+            document.getElementById('current-config').textContent = currentConfig;
+
+            // Calculate the total number of electrons and update the text
+            const totalElectrons = configList.reduce((total, num) => total + num, 0);
+            document.getElementById('electrons').textContent = totalElectrons;
+
+            document.getElementById('outer-electrons').textContent = currentConfig.split('-').pop();
+
+        }
+        
+        function updateSelection() {
+            options.forEach((option, index) => {
+                const textElement = document.getElementById(`${option}-text`);
+                if (index === selectedIndex) {
+                    textElement.innerHTML = `<strong>${textElement.innerHTML}</strong>`; // Wrap the content in bold tags
+                    textElement.style['font-size']= "35px"; // Increase the font size
+                } else {
+                    textElement.innerHTML = textElement.innerHTML.replace(/<\/?strong>/g, ''); // Remove bold tags
+                    textElement.style['font-size']= "20px"; // Reset the font size
+                }
+            });
+        }
+
+        const maxElectronsPerRing = [2, 8, 8, 8];
+        let currentConfig = ""; // Starting configuration with 3 rings
+        let selectedIndex = 0; // 0 for electrons, 1 for neutrons
+        const options = ['electrons', 'neutrons'];
+
+        document.getElementById('increment').addEventListener('click', () => updateConfig('increment'));
+        document.getElementById('decrement').addEventListener('click', () => updateConfig('decrement'));
+
+        placeElectrons(parseConfiguration(currentConfig)); // Initial placement
+        updateSelection(); // Initial call to highlight the default selection
+        updateConfig();
+
+
+        document.getElementById('left-arrow').addEventListener('click', () => {
+            selectedIndex = (selectedIndex - 1 + options.length) % options.length;
+            updateSelection();
+        });
+
+        document.getElementById('right-arrow').addEventListener('click', () => {
+            selectedIndex = (selectedIndex + 1) % options.length;
+            updateSelection();
+        });
+
+        inputSequence = "";
+        maxLength = 32;
+
+        document.addEventListener("keydown", function(event) {
+            if (event.key === "Enter" && inputSequence != "") {
+                console.log(inputSequence)
+                const element = fetchData("tag-info/" + inputSequence)
+                .then(tag => {
+                if (tag["Tag Name"]) {
+                    if (tag["Tag Name"] === "element_info") {
+                        getPage('element_info');
+                    } else if (tag["Tag Name"] === "compare") {
+                        getPage('compare');
+                    } else if (tag["Tag Name"] === "bohr_models") {
+                        getPage('bohr_models');
+                    } else if (tag["Tag Name"] === "ionic_compound") {
+                        getPage('ionic_compound');
+                    } else if (tag["Tag Name"] === "home" || tag["Tag Name"] === "back"){ 
+                        getPage('');
+                    } else if (tag["Tag Name"] === "plus"){
+                        updateConfig('increment')
+                    } else if (tag["Tag Name"] === "minus"){
+                        updateConfig('decrement')
+                    } else if (tag["Tag Name"] === "left_arrow"){
+                        selectedIndex = (selectedIndex - 1 + options.length) % options.length;
+                        updateSelection();
+                    } else if (tag["Tag Name"] === "right_arrow"){
+                        selectedIndex = (selectedIndex + 1) % options.length;
+                        updateSelection();
+                    }
+                    else {
+                        console.log("Invalid Input")
+                    }
+                }
+                else if (tag["Element Name"]){
+                    updateBohr(tag)
+                }
+                else{
+                    console.log("Invalid Input")
+                }
+                inputSequence = "";
+            })
+
+            inputSequence = ""; // Reset sequence after Enter
+            } else if (/^[a-zA-Z0-9]$/.test(event.key)) {
+                if (inputSequence.length < maxLength) {
+                inputSequence += event.key;
+                }
+            }
+        });
+
+        function updateBohr(element){
+            document.getElementById('element-name').textContent = element["Element Name"];
+            currentConfig = element["Electron Configuration"];
+            document.getElementById('current-config').textContent = currentConfig;
+            document.getElementById('proton-count').innerHTML = element["Atomic Number"];
+            document.getElementById('neutron-count').innerHTML = element["Atomic Number"];
+            document.getElementById('neutrons').textContent = element["Atomic Number"];
+            updateConfig();
+        
+
+            const protons = parseInt(document.getElementById('proton-count').textContent);
+            const neutrons = parseInt(document.getElementById('neutrons').textContent);
+            const atomicWeight = protons + neutrons;
+            document.querySelector('#atomic-weight').textContent = `${atomicWeight} u`;
+
+        }
+
+    </script>
+</body>
 </html>
-
-
-
-<style>
-    .page_headder{
-        height: 10%;
-    }
-    .title{
-        text-align: center;
-    }
-    .page_body{
-        height: 80%;
-        text-align: center;
-        align-content: center;
-    }
-
-    .select_button{
-        height: 30%;
-        width: 40%;
-        text-align: center;
-    }
-
-    .page_footer button{
-        height: 75px;
-        width: 75px;
-    }
-</style>
