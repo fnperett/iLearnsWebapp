@@ -87,6 +87,11 @@
     .middle-column div {
       font-weight: 700;
     }
+    .middle-column div:not(:first-child),
+    #element-1 div:not(:first-child),
+    #element-2 div:not(:first-child) {
+    font-size: 4rem;
+    }
     .page_footer {
       position: absolute;
       left: 0;
@@ -170,8 +175,8 @@
           <div>Category</div>
           <div>Phase at STP</div>
           <div>Electronegativity</div>
-          <div>Density</div>
-          <div>Atomic Weight</div>
+          <div>Density (g/cm³)</div>
+	  <div>Atomic Weight (u)</div>
         </div>
 
         <!-- Right Element -->
@@ -265,8 +270,8 @@
         element["Category"],
         element["Phase at STP"],
         element["Electronegativity "],
-        element["Density"]+ ' g/cm<sup>3</sup>',
-        element["Atomic Weight"]+ ' u',
+        element["Density"],
+        element["Atomic Weight"],
       ];
       const column = document.getElementById(columnId).children;
       for (let i = 0; i < values.length; i++) {
