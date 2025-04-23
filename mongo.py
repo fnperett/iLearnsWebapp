@@ -74,7 +74,7 @@ def mapTagToElementId(rfidTag:str, elementId:int):
    
     
 def getTagInfo(name, collection):
-    retval=collection.find_one({"Chem Tag ID":name})
+    retval=collection.find_one({"Poster2":name})
     if retval:
         del retval['_id']
     else:
@@ -83,4 +83,4 @@ def getTagInfo(name, collection):
 
 def updateTag(name, tagID, collection):
     # Update the tag ID in the database
-    collection.update_one({"Tag Name": name}, {"$set": {"Chem Tag ID": tagID}})
+    collection.update_many({"Tag Name": name}, {"$set": {"Poster2": tagID}})

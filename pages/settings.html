@@ -20,7 +20,7 @@
                 <button style="width: 10cqw; background-color: 81b684;"></button>
             </div>
             <div class="e_row_one" style="flex: auto; display: inline-flex;">
-                <button>1</button>
+                <button id ="Hydrogen" >1</button>
                 <button style="visibility: hidden;">-</button>
                 <button style="visibility: hidden;">-</button>
                 <button style="visibility: hidden;">-</button>
@@ -37,11 +37,11 @@
                 <button style="visibility: hidden;">-</button>
                 <button style="visibility: hidden;">-</button>
                 <button style="visibility: hidden;">-</button>
-                <button>2</button>
+                <button id = "Helium">2</button>
             </div>
             <div class="e_row_two" style="flex: auto; display: inline-flex;">
-                <button>3</button>
-                <button>4</button>
+                <button id = "Lithium">3</button>
+                <button id = "Beryllium">4</button>
                 <button style="visibility: hidden;">-</button>
                 <button style="visibility: hidden;">-</button>
                 <button style="visibility: hidden;">-</button>
@@ -52,16 +52,16 @@
                 <button style="visibility: hidden;">-</button>
                 <button style="visibility: hidden;">-</button>
                 <button style="visibility: hidden;">-</button>
-                <button>5</button>
-                <button>6</button>
-                <button>7</button>
-                <button>8</button>
-                <button>9</button>
-                <button>10</button>
+                <button id = "Boron">5</button>
+                <button id = "Carbon">6</button>
+                <button id = "Nitrogen">7</button>
+                <button id = Oxygen>8</button>
+                <button id = Fluorine>9</button>
+                <button id = "Neon">10</button>
             </div>
             <div class="e_row_three" style="flex: auto; display: inline-flex;">
-                <button>11</button>
-                <button>12</button>
+                <button id = "Sodium">11</button>
+                <button id = "Magnesium">12</button>
                 <button style="visibility: hidden;">-</button>
                 <button style="visibility: hidden;">-</button>
                 <button style="visibility: hidden;">-</button>
@@ -72,25 +72,25 @@
                 <button style="visibility: hidden;">-</button>
                 <button style="visibility: hidden;">-</button>
                 <button style="visibility: hidden;">-</button>
-                <button>13</button>
-                <button>14</button>
-                <button>15</button>
-                <button>16</button>
-                <button>17</button>
-                <button>18</button>
+                <button id = "Aluminum">13</button>
+                <button id = "Silicon">14</button>
+                <button id = "Phosphorus">15</button>
+                <button id = "Sulfur">16</button>
+                <button id = "Chlorine">17</button>
+                <button id = "Argon">18</button>
             </div>
             <div class="e_row_four" style="flex: auto; display: inline-flex;">
-                <button>19</button>
-                <button>20</button>
-                <button>21</button>
-                <button>22</button>
-                <button>23</button>
-                <button>24</button>
-                <button>25</button>
-                <button>26</button>
-                <button>27</button>
-                <button>28</button>
-                <button>29</button>
+                <button id = "Potassium">19</button>
+                <button id = "Calcium">20</button>
+                <button id = "Scandium">21</button>
+                <button id = "Titanium">22</button>
+                <button id = "Vanadium">23</button>
+                <button id = "Chromium">24</button>
+                <button id = "Maganese">25</button>
+                <button id = "Iron">26</button>
+                <button id = Cobalt>27</button>
+                <button id = "Nickel">28</button>
+                <button id = "Copper">29</button>
                 <button>30</button>
                 <button>31</button>
                 <button>32</button>
@@ -134,7 +134,7 @@
     </div>
     <div class="page_footer">
         <button onclick="getRootPage();">
-            <img src="/images/back.png" style="width: -webkit-fill-available;">
+            <img src="/images_usage/back.png" style="width: -webkit-fill-available;">
         </button>
     </div>
 </html>
@@ -152,6 +152,7 @@
         height: 80%;
         text-align: center;
         align-content: center;
+        background-color: white;
     }
     .page_body button{
         width: 5cqw;
@@ -169,22 +170,31 @@
         height: 75px;
         width: 75px;
     }
+
 </style>
 
 
 <script>
+    // Keep track of the currently active button
+    let activeButton = null;
+
     document.querySelectorAll("button").forEach(button => {
         button.addEventListener("click", function() {
-            // Set button background to gray
-            let old = this
-            let buttonText = this.textContent.trim()
+            // If another button is already active, reset its background
+            if (activeButton) {
+                activeButton.style.backgroundColor = "white";
+            }
+
+            // Set the clicked button as the active button
+            activeButton = this;
+            const buttonText = this.id;
+            console.log("Button clicked:", buttonText);
             this.style.backgroundColor = "gray";
-    
-            let activeButton = this;
+
             let inputText = "";
-    
+
             // Listen for keyboard input
-            document.addEventListener("keydown", function handler(event) {
+            const handler = function(event) {
                 if (event.key === "Enter") {
                     // Send POST request when Enter is pressed
                     fetch("/", {
@@ -194,19 +204,25 @@
                     }).then(response => response.json())
                       .then(data => console.log("Response:", data))
                       .catch(error => console.error("Error:", error));
-    
-                    // Reset button background and remove event listener
-                    old.style.backgroundColor = "white";
-                    console.log("changing color back to white")
+
+                    // Reset the active button's background color
+                    activeButton.style.backgroundColor = "white";
+                    console.log("Changing color back to white");
+
+                    // Remove event listener for keyboard input
                     document.removeEventListener("keydown", handler);
+                    activeButton = null; // Reset active button reference
                 } else if (event.key.length === 1) {
                     // Append typed character to inputText
                     inputText += event.key;
                 }
-            });
+            };
+
+            document.addEventListener("keydown", handler);
         });
     });
-    </script>
+</script>
+
     
 
 <!-- <script>

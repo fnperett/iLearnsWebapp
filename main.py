@@ -59,7 +59,10 @@ class CustomHandler(http.server.SimpleHTTPRequestHandler):
             print("Received POST data:", data)
 
             if(data.get("button_remap", None) != None):
-                response = {"status": "success", "message": "Button "+data.get("button_remap")+" was re-mapped"}
+                tag_name = data.get("button_remap")
+                tag_id = data.get("id")
+                mongo.updateTag(tag_name, tag_id, mongo.tags)
+                response = {"status": "success", "message": "Button "+ tag_name + " was re-mapped to: " + tag_id}
                 self.send_response(200)
                 self.send_header('Content-Type', 'application/json')
                 self.end_headers()
