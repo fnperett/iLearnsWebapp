@@ -14,10 +14,10 @@
     <div class="page_body">
         <div class="buttons" style="width: fit-content; text-align: center; display: inline-block;">
             <div style="position: absolute; left: 18.5vw; margin-top: 7.5%; display: inline-flex; gap: 1vw;">
-                <button style="width: 10cqw; background-color: 8185F0;"></button>
-                <button style="width: 10cqw; background-color: FFDD64;"></button>
-                <button style="width: 10cqw; background-color: FF776D;"></button>
-                <button style="width: 10cqw; background-color: 81b684;"></button>
+                <button id = "element_info" style="width: 10cqw; background-color: 8185F0;"></button>
+                <button id = "compare" style="width: 10cqw; background-color: FFDD64;"></button>
+                <button id = "bohr_models" style="width: 10cqw; background-color: FF776D;"></button>
+                <button id = "ionic_compund" style="width: 10cqw; background-color: 81b684;"></button>
             </div>
             <div class="e_row_one" style="flex: auto; display: inline-flex;">
                 <button id ="Hydrogen" >1</button>
@@ -119,16 +119,16 @@
                 <button id="Iodine">53</button>
                 <button id="Xenon">54</button>
             </div>
-            <div class="e_row_five" style="flex: auto; display: inline-flex; position: absolute; left: 5vw; padding-top: 8%; gap: 1.7vw;">
-                <button>&#8962;</button>
-                <button>+</button>
-                <button>-</button>
-                <button>back</button>
+            <div class="e_row_five" style="flex: auto; display: inline-flex; position: absolute; left: 5vw; margin-top: 8%; gap: 1.7vw;">
+                <button id = "home">&#8962;</button>
+                <button id = "plus">+</button>
+                <button id = "minus">-</button>
+                <button id= "back">back</button>
             </div>
-            <div class="e_row_five" style="flex: auto; display: inline-flex; position: absolute; left: 71.4vw; padding-top: 8%; gap: 1.7vw;">
-                <button>&lt;</button>
-                <button>o</button>
-                <button>&gt;</button>
+            <div class="e_row_five" style="flex: auto; display: inline-flex; position: absolute; left: 71.4vw; margin-top: 8%; gap: 1.7vw;">
+                <button id = "left_arrow">&lt;</button>
+                <button id = "select">o</button>
+                <button id = "right_arrow">&gt;</button>
             </div>
         </div>
     </div>
@@ -152,7 +152,7 @@
         height: 80%;
         text-align: center;
         align-content: center;
-        background-color: white;
+        /* background-color: white; */
     }
     .page_body button{
         width: 5cqw;
@@ -170,57 +170,68 @@
         height: 75px;
         width: 75px;
     }
-
 </style>
 
 
 <script>
     // Keep track of the currently active button
     let activeButton = null;
+    let inputText = "";
 
+    // Function to reset the button and active state
+    function resetButton() {
+        if (activeButton) {
+            activeButton.style.backgroundColor = "white"; // Reset the background color
+            activeButton = null; // Clear the active button reference
+        }
+        document.removeEventListener("keydown", handleKeydown); // Remove the previous keydown listener
+        inputText = ""; // Clear input text
+    }
+
+    // Function to handle keydown events
+    function handleKeydown(event) {
+        if (event.key === "Enter") {
+            // Send POST request when Enter is pressed
+            if (activeButton) {
+                fetch("/", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ button_remap: activeButton.id, id: inputText })
+                })
+                .then(response => response.json())
+                .then(data => console.log("Response:", data))
+                .catch(error => console.error("Error:", error));
+                
+                // Reset button after sending the request
+                resetButton();
+            }
+        } else if (event.key.length === 1) {
+            // Append typed character to inputText if it's a single character
+            inputText += event.key;
+        }
+    }
+
+    // Add event listeners to all buttons
     document.querySelectorAll("button").forEach(button => {
         button.addEventListener("click", function() {
-            // If another button is already active, reset its background
+            // If another button is already active, reset it
             if (activeButton) {
-                activeButton.style.backgroundColor = "white";
+                resetButton();
             }
 
             // Set the clicked button as the active button
             activeButton = this;
-            const buttonText = this.id;
-            console.log("Button clicked:", buttonText);
-            this.style.backgroundColor = "gray";
-
-            let inputText = "";
+            console.log("Button clicked:", this.id);
+            this.style.backgroundColor = "gray"; // Highlight active button
 
             // Listen for keyboard input
-            const handler = function(event) {
-                if (event.key === "Enter") {
-                    // Send POST request when Enter is pressed
-                    fetch("/", {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ button_remap: buttonText, id: inputText })
-                    }).then(response => response.json())
-                      .then(data => console.log("Response:", data))
-                      .catch(error => console.error("Error:", error));
-
-                    // Reset the active button's background color
-                    activeButton.style.backgroundColor = "white";
-                    console.log("Changing color back to white");
-
-                    // Remove event listener for keyboard input
-                    document.removeEventListener("keydown", handler);
-                    activeButton = null; // Reset active button reference
-                } else if (event.key.length === 1) {
-                    // Append typed character to inputText
-                    inputText += event.key;
-                }
-            };
-
-            document.addEventListener("keydown", handler);
+            document.addEventListener("keydown", handleKeydown);
         });
     });
+
+
+
+
 </script>
 
     
