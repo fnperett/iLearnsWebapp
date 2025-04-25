@@ -34,8 +34,8 @@ def csvToCollection(data, collection):
             while n != columns:
                 document[titles[n]] = elem[n] #Add each field to a document
                 n += 1 #increment index
-
-            collection.insert_one(document) #insert completed document into collection named "elements"
+            if not collection.find_one(document):
+                collection.insert_one(document) #insert completed document into collection named "elements"
 
 #Function:      Get all data from the database about the given element name
 #Inputs:        name - Element Name
@@ -83,4 +83,4 @@ def getTagInfo(name, collection):
 
 def updateTag(name, tagID, collection):
     # Update the tag ID in the database
-    collection.update_one({"Tag Name": name}, {"$set": {"Chem Tag ID": tagID}})
+    collection.update_many({"Tag Name": name}, {"$set": {"Chem Tag ID": tagID}})
