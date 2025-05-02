@@ -23,7 +23,7 @@ class CustomHandler(http.server.SimpleHTTPRequestHandler):
             response = mongo.getTagInfo(info, mongo.tags)
             if not response:
                 response = {"Error": "Tag not found"}
-            elif response["Element"] == "yes":
+            elif response.get("Element","no") == "yes":
                 element = response["Tag Name"].capitalize()
                 response = mongo.getElementInfo(element, mongo.elements)
             self.send_response(200)
@@ -59,10 +59,7 @@ class CustomHandler(http.server.SimpleHTTPRequestHandler):
             print("Received POST data:", data)
 
             if(data.get("button_remap", None) != None):
-                tag_name = data.get("button_remap")
-                tag_id = data.get("id")
-                mongo.updateTag(tag_name, tag_id, mongo.tags)
-                response = {"status": "success", "message": "Button "+ tag_name + " was re-mapped to: " + tag_id}
+                response = {"status": "success", "message": "Button "+data.get("button_remap")+" was re-mapped"}
                 self.send_response(200)
                 self.send_header('Content-Type', 'application/json')
                 self.end_headers()
@@ -84,11 +81,10 @@ class CustomHandler(http.server.SimpleHTTPRequestHandler):
 # Create an HTTP server
 with socketserver.TCPServer(("", PORT), CustomHandler) as httpd:
     print(f"Serving iLearns at http://localhost:{PORT}")
-    mongo.csvToCollection("./csv/element_database.csv",mongo.elements)
-    mongo.csvToCollection("./csv/tag_database.csv",mongo.tags)
+    # mongo.csvToCollection("./csv/element_database.csv",mongo.elements)
+    # mongo.csvToCollection("./csv/tag_database.csv",mongo.tags)
     try:
         httpd.serve_forever()
     except KeyboardInterrupt:
         print("\nStopping")
         httpd.server_close()
-

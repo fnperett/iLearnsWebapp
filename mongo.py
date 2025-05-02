@@ -1,16 +1,24 @@
-from pymongo import MongoClient
+#from pymongo import MongoClient
 import csv
+import json
 
 #Connect to mongo server on local host
-client = MongoClient('mongodb://localhost:27017')
+#client = MongoClient('mongodb://localhost:27017')
 
 #Create a database -> This holds all the tables/collections
-db = client['database']
+#db = client['database']
 
 #Create table labled elements
-elements = db["elements"]
-mappings = db["mappings"]
-tags = db["tags"]
+#elements = db["elements"]
+#mappings = db["mappings"]
+#tags = db["tags"]
+
+#String tags to be called with "mongo.elements"
+elements = "elements"
+mappings = "mappings"
+tags = "tags"
+
+elementJson = []
 
 
 #Function:      Add csv data set to a database collection in MongoDB
@@ -34,53 +42,81 @@ def csvToCollection(data, collection):
             while n != columns:
                 document[titles[n]] = elem[n] #Add each field to a document
                 n += 1 #increment index
-            if not collection.find_one(document):
-                collection.insert_one(document) #insert completed document into collection named "elements"
 
-#Function:      Get all data from the database about the given element name
-#Inputs:        name - Element Name
-#               collection - Name of table in MongoDB
-#Outputs:       returns document about the prompted element
-def getElementInfo(name, collection):
-    retval=collection.find_one({"Element Name":name})
-    if retval:
-        del retval['_id']
-    else:
-        print(name)
-    return retval
+            collection.insert_one(document) #insert completed document into collection named "elements"
 
-def tagMappingExists(rfid:str):
-    try:
-        if mappings.find_one({"uid":rfid}) == None:
-            return False
-        return True
-    except:
-        return False
+
+def csvToJson(filePath:str):
+    with open(filePath, 'r') as file:
+        reader = csv.DictReader(file)
+        return [row for row in reader]
     
-def elementMappingExists(elementId:int):
-    try:
-        if mappings.find_one({"_id":elementId}) == None:
-            return False
-        return True
-    except:
-        return False
 
-def getTagMappings(rfid):
-    return mappings.find_one({"uid":rfid})
+# #Function:      Get all data from the database about the given element name
+# #Inputs:        name - Element Name
+# #               collection - Name of table in MongoDB
+# #Outputs:       returns document about the prompted element
+# def getElementInfo(name, collection):
+#     retval=collection.find_one({"Element Name":name})
+#     if retval:
+#         del retval['_id']
+#     else:
+#         print(name)
+#     return retval
 
-def mapTagToElementId(rfidTag:str, elementId:int):
-    return mappings.insert_one({"uid":rfidTag,"_id":elementId})
+def getElementInfo(name, collection):
+    if collection == elements:
+        for element in elementJson:
+            if element["Element Name"] == name:
+                return element
+
+# def tagMappingExists(rfid:str):
+#     try:
+#         if mappings.find_one({"uid":rfid}) == None:
+#             return False
+#         return True
+#     except:
+#         return False
+    
+# def elementMappingExists(elementId:int):
+#     try:
+#         if mappings.find_one({"_id":elementId}) == None:
+#             return False
+#         return True
+#     except:
+#         return False
+
+# def getTagMappings(rfid):
+#     return mappings.find_one({"uid":rfid})
+
+# def mapTagToElementId(rfidTag:str, elementId:int):
+#     return mappings.insert_one({"uid":rfidTag,"_id":elementId})
 
    
     
+# def getTagInfo(name, collection):
+#     retval=collection.find_one({"Poster2":name})
+#     if retval:
+#         del retval['_id']
+#     else:
+#         print(name)
+#     return retval
+
 def getTagInfo(name, collection):
-    retval=collection.find_one({"Chem Tag ID":name})
-    if retval:
-        del retval['_id']
-    else:
-        print(name)
-    return retval
+    if collection == tags:
+        for tag in tagJson:
+            if tag["Chem Tag ID"] == name:
+                return tag
+        for element in elementJson:
+            if str.lower(element["Symbol"]) == str.lower(name):
+                return element
 
 def updateTag(name, tagID, collection):
     # Update the tag ID in the database
-    collection.update_many({"Tag Name": name}, {"$set": {"Chem Tag ID": tagID}})
+    collection.update_one({"Tag Name": name}, {"$set": {"Poster2": tagID}})
+
+
+
+
+elementJson = csvToJson("./csv/element_database.csv")
+tagJson = csvToJson("./csv/tag_database.csv")
