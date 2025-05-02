@@ -60,6 +60,11 @@
                 <div id="left-list" class="list left"></div>
                 <div id="right-list" class="list right"></div>
             </div>
+            <div class="compound-name">
+                <div id="compound-name">
+                    !
+                </div>
+            </div>
         </div>
         <h1 id =neutralized>Neutralized</h1>
         <div class="button-legend">
@@ -104,9 +109,17 @@
             text-align: center;
         }
         .page_body{
+            top: 20%;
             height: 80%;
             text-align: center;
             align-content: center;
+            position: absolute;
+        }
+
+        .compound-name{
+            position: absolute;
+            left: -35vh;
+            top: 10px;
         }
     
         .select_button{
@@ -145,7 +158,8 @@
             z-index: 1;
             font-size: 60px;
             top: -130px;
-        }   
+            position: absolute;
+        }
         .list {
             display: flex;
             flex-direction: column;
@@ -163,6 +177,7 @@
             box-sizing: border-box;
             margin: 2px 0;
             transition: all 0.2s ease-in-out;
+            font-size: 40px;
         }
         .left .block {
             background-color: #4A90E2;
@@ -178,11 +193,11 @@
             
         } */
         .selected {
-            border: 4px solid rgb(0, 255, 47);
+            border: 10px solid rgb(255, 255, 255);
             animation: pulse 1s infinite alternate;
         }
         @keyframes pulse {
-            0% { border-color: rgb(0, 255, 47); }
+            0% { border-color: rgb(255, 255, 255); }
             100% { border-color: rgba(255, 255, 255, 0); }
         }
         .controls {
@@ -194,7 +209,6 @@
             display: flex;
             align-items: flex-start;
             gap: 20px;
-            position: relative;
             top: -250px;
         }
         #title {
@@ -202,7 +216,7 @@
             font-size: 100px;
             color: rgb(0, 0, 0);
             text-shadow: 1px 1px 4px rgb(255, 255, 255);
-            top: 50px;
+            top: -40px;
         }
         #neutralized {
             position: relative;
@@ -261,6 +275,7 @@
         block.dataset.side = side;
         block.dataset.elementName = elementName
         block.style.height = `${(60 * size) + ((size * size) / 2.5)}px`;
+        // block.style.height = `${size}fr`;
         block.style.width = '200px';
         block.innerText = side === 'left' ? `${elementName} +${size}` : `${elementName} -${size}`;
         block.style.clipPath = side === 'left' ? generateLeftClipPath(size) : generateRightClipPath(size);
@@ -300,7 +315,18 @@
         const newBlock = generateBlock(size, side, elementName);
         list.appendChild(newBlock);
         selectBlock(newBlock);  // Auto-select new block
-    
+        generateCompound();
+    }
+
+    function generateCompound(){
+        let compoundName = "!"
+        for (let i = 0; i < leftElement.length; i++){
+            compoundName += " " + leftElement[i][0]+leftElement[i][2]
+        }
+        for (let i = 0; i < rightElement.length; i++){
+            compoundName += " " + rightElement[i][0]+rightElement[i][2]
+        }
+        document.getElementById('compound-name').innerText = compoundName;
     }
 
     function selectBlock(block) {
@@ -343,6 +369,7 @@
                 rightElement.push(leftElement.pop());
 
 
+                generateCompound();
                 return
             }
         } else if (selectedSide === "right" && action == 1) {
@@ -369,6 +396,7 @@
                 // rightOxidationIndex = 0;
                 leftElement.push(rightElement.pop());
 
+                generateCompound();
                 return
             }
             newSize = Math.abs(newSize);
@@ -386,10 +414,13 @@
             if (selectedSide === "left") {
                 leftOxidationIndex -= 1;
                 leftList.splice(leftOxidationIndex, 1);
+                leftList.pop()
             } else {
                 rightOxidationIndex -= 1;
                 rightList.splice(rightOxidationIndex, 1);
+                rightList.pop()
             }
+            generateCompound()
         } else {
             selectedBlock.dataset.size = newSize;
             elementName = selectedBlock.dataset.elementName;
@@ -476,24 +507,24 @@
                     changeBlockSize(-1);
                     checkNeutralized();
                 } else if (tag["Tag Name"] === "left_arrow"){
-                    selectBlock('left');
+                    selectLatestBlock('left');
                 } else if (tag["Tag Name"] === "right_arrow"){
-                    selectBlock('right');
+                    selectLatestBlock('right');
                 }
-            } else if (tag["Element Name"]){
+            } else if (tag["Symbol"]){
                 oxStates = parseOxidation(tag["Oxidation State"]);
                 console.log(oxStates);
                 firstOxidation = oxStates[0];
                 if (firstOxidation > 0){
 
-                    leftElement.push([tag["Element Name"], 0, oxStates]);
+                    leftElement.push([tag["Symbol"], 0, oxStates]);
                     // leftOxidationIndex = 0;
                     // leftList = oxStates;
                     addBlock("left", leftElement[leftElement.length - 1][0], firstOxidation);
                     selectedSide = "left";
                     checkNeutralized();
                 } else if (firstOxidation < 0){
-                    rightElement.push([tag["Element Name"], 0, oxStates]);
+                    rightElement.push([tag["Symbol"], 0, oxStates]);
                     // rightElement = tag["Element Name"];
                     // rightOxidation = 0;
                     // rightList = oxStates;
