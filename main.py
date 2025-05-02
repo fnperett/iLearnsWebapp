@@ -23,7 +23,7 @@ class CustomHandler(http.server.SimpleHTTPRequestHandler):
             response = mongo.getTagInfo(info, mongo.tags)
             if not response:
                 response = {"Error": "Tag not found"}
-            elif response["Element"] == "yes":
+            elif response.get("Element","no") == "yes":
                 element = response["Tag Name"].capitalize()
                 response = mongo.getElementInfo(element, mongo.elements)
             self.send_response(200)
@@ -81,8 +81,8 @@ class CustomHandler(http.server.SimpleHTTPRequestHandler):
 # Create an HTTP server
 with socketserver.TCPServer(("", PORT), CustomHandler) as httpd:
     print(f"Serving iLearns at http://localhost:{PORT}")
-    mongo.csvToCollection("./csv/element_database.csv",mongo.elements)
-    mongo.csvToCollection("./csv/tag_database.csv",mongo.tags)
+    # mongo.csvToCollection("./csv/element_database.csv",mongo.elements)
+    # mongo.csvToCollection("./csv/tag_database.csv",mongo.tags)
     try:
         httpd.serve_forever()
     except KeyboardInterrupt:
